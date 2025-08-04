@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Shop - Homepage</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="cart.js" defer></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1em 2em;
+            background: none;
+            color: white;
+            font-weight: bold;
+            z-index: 10;
+            position: relative;
+        }
+        nav a {
+            color: white;
+            margin-left: 1em;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .background-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        .animated-image-right {
+             z-index: 1;
+            width: 600px;
+            position: absolute;
+            top: 450px;
+            right: 200px;
+            animation: moveR 15s infinite;
+        }
+        .animated-image-left {
+           z-index: 3;
+            width: 400px;
+            position: absolute;
+            top: 450px;
+            left: 200px;
+            animation: moveL 15s infinite;
+        }
+        @keyframes moveR {
+            0%, 100% {
+                transform: translateX(0) scale(0.9);
+            }
+            50% {
+                transform: translateX(20px) scale(1.0);
+            }
+        }
+        @keyframes moveL {
+            0%, 100% {
+                transform: translateX(0) scale(0.9);
+            }
+            50% {
+                transform: translateX(-20px) scale(1.0);
+            }
+        }
+        .text-overlay-left {
+          z-index: 2;
+            position: absolute;
+            top: 290px;
+            left: 200px;
+            color: white;
+            font-size: 90px;
+            font-weight: bold;
+            font-family: 'Open Sans', sans-serif;
+        }
+        .text-overlay-right {
+             z-index: 4;
+            position: absolute;
+            top: 290px;
+            right: 200px;
+            color: white;
+            font-size: 90px;
+            font-weight: bold;
+            font-family: 'Open Sans', sans-serif;
+            text-align: right;
+        }
+        #warningBox {
+            display: none;
+            position: absolute;
+            top: 10px;
+            width: 100%;
+            text-align: center;
+            background: #fff3cd;
+            color: #856404;
+            padding: 1em;
+            font-weight: bold;
+            animation: blink 1s step-start infinite;
+        }
+        @keyframes blink {
+            50% { opacity: 0; }
+        }
+        main {
+            padding-top: 200px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="warningBox">
+    PLEASE LOGIN OR REGISTER TO GET LATEST UPDATE OF THE SHOPS SELLING
+</div>
+
+<video class="background-video" autoplay loop muted>
+    <source src="https://nicolaipalmkvist.com/wp-content/uploads/2024/12/1-1.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+</video>
+
+<img src="https://nicolaipalmkvist.com/wp-content/uploads/2024/12/Youtube-Thumbails-16-1-768x432.png" class="animated-image-right" alt="Animated Right">
+<img src="https://nicolaipalmkvist.com/wp-content/uploads/2024/12/Youtube-Thumbails-13-1-1024x576.png" class="animated-image-left" alt="Animated Left">
+<div class="text-overlay-left">Chocolate<br>makes</div>
+<div class="text-overlay-right">Everything<br>better.</div>
+
+<header>
+    <h1>Welcome to My Shop</h1>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="contact_us.php">Contact</a>
+        <a href="login.php">Login</a>
+        <a href="register.php">Register</a>
+        <a href="#" onclick="guestWarning()">Checkout</a>
+    </nav>
+</header>
+
+<main>
+    <!-- You can leave this empty or add product list -->
+</main>
+
+<script>
+    function guestWarning() {
+        const warning = document.getElementById("warningBox");
+        warning.style.display = "block";
+        warning.scrollIntoView({ behavior: "smooth" });
+    }
+</script>
+
+</body>
+</html>
