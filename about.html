@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About Us - My Shop</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .about-container {
+        display: flex;
+        gap: 2em;
+        padding: 2em;
+        align-items: center;
+        max-width: 1000px;
+        margin: auto;
+    }
+    .about-container img {
+        max-width: 400px;
+        border-radius: 12px;
+    }
+    .blink-warning {
+        text-align: center;
+        background: #fff3cd;
+        color: #856404;
+        padding: 1em;
+        font-weight: bold;
+        animation: blink 1s step-start infinite;
+    }
+    @keyframes blink {
+        50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div id="warningBox" class="blink-warning" style="display: none;">
+    PLEASE LOGIN OR REGISTER TO GET LATEST UPDATE OF THE SHOPS SELLING
+  </div>
+
+  <h1 style="text-align:center;">About Our Shop</h1>
+  <nav style="text-align:center; margin-bottom: 1em;">
+    <a href="index.html">Home</a>
+    <a href="login.php">Login</a>
+    <a href="register.php">Register</a>
+    <a href="#" onclick="guestWarning()">Checkout</a>
+  </nav>
+</header>
+
+<main>
+  <section class="about-container">
+    <img src="images/about-us.jpg" alt="About our shop">
+    <div>
+      <h2>📚 Welcome to MyShop</h2>
+      <p>
+        At MyShop, we curate a wide selection of bestsellers, indie gems, and must-reads to suit every reader.
+        Our mission is to bring stories to life — whether you're looking for motivation, fantasy, business guides,
+        or children's favorites.
+      </p>
+      <p>
+        Please <strong>login or register</strong> to unlock member pricing and get updates on new releases!
+      </p>
+      <button onclick="guestWarning()" style="padding: 0.8em 1.5em; background: #4e54c8; color: white; border: none; border-radius: 6px; cursor: pointer;">
+        Shop Collection
+      </button>
+    </div>
+  </section>
+</main>
+
+<script>
+  function guestWarning() {
+    const warning = document.getElementById("warningBox");
+    warning.style.display = "block";
+    warning.scrollIntoView({ behavior: "smooth" });
+  }
+</script>
+
+</body>
+</html>

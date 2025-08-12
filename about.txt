@@ -1,0 +1,55 @@
+<?php
+session_start();
+if (!isset($_SESSION["username"]) || $_SESSION["usertype"] !== "user") {
+    header("Location: login.php");
+    exit();
+}
+$aboutFile = "about.txt";
+$aboutContent = file_exists($aboutFile) ? file_get_contents($aboutFile) : "No About Content Available.";
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About Us</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .user-label {
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            background: #222;
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+        }
+        .about-box {
+            margin: 2em auto;
+            width: 80%;
+            background: #f9f9f9;
+            color: #333;
+            padding: 2em;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="user-label">👤 Logged in as: <?= htmlspecialchars($_SESSION["username"]) ?></div>
+
+<header>
+    <h1>About Our Shop</h1>
+    <nav>
+        <a href="userhome.php">Home</a>
+        <a href="checkout.php">Checkout</a>
+        <a href="logout.php">Logout</a>
+    </nav>
+</header>
+
+<main>
+    <div class="about-box">
+        <pre><?= htmlspecialchars($aboutContent) ?></pre>
+    </div>
+</main>
+</body>
+</html>
