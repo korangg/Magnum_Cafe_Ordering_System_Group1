@@ -147,6 +147,7 @@ $result = mysqli_query($conn, "SELECT * FROM products WHERE stock > 0");
     <nav>
         <a href="userhome.php">Home</a>
         <a href="about.php">About</a>
+		<a href="profile.php">Profile</a>
         <a href="checkout.php">Checkout</a>
         <a href="contact_us.php">Contact</a>
         <a href="user_orders.php">View Order Status</a>
