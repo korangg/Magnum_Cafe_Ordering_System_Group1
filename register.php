@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = trim($_POST["username"]);
     $email = trim($_POST["email"]);
     $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
-    $usertype = $_POST["usertype"];
+   $usertype = 'user';
     $verify_token = md5(uniqid($username, true));
 
     // Insert user into database
