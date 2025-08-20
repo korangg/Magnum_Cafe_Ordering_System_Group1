@@ -1,22 +1,42 @@
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-function addToCart(name, price) {
+function addToCart(name, price, qtyToAdd) {
+    // This is the updated addToCart function to check stock
     const itemIndex = cart.findIndex(item => item.name === name);
-    if (itemIndex !== -1) {
-        cart[itemIndex].qty += 1;
-    } else {
-        cart.push({ name, price, qty: 1 });
-    }
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert(name + ' added to cart!');
+    let currentQty = itemIndex !== -1 ? cart[itemIndex].qty : 0;
+    let newQty = currentQty + qtyToAdd;
+
+    fetch('check_stock.php?name=' + encodeURIComponent(name))
+        .then(response => response.json())
+        .then(data => {
+            if (data.stock >= newQty) {
+                if (itemIndex !== -1) {
+                    cart[itemIndex].qty = newQty;
+                } else {
+                    cart.push({ name, price, qty: qtyToAdd });
+                }
+                localStorage.setItem('cart', JSON.stringify(cart));
+                alert(name + ' added to cart!');
+                updateCartDisplay();
+            } else {
+                alert('Not enough stock for ' + name + '! Only ' + data.stock + ' left.');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching stock:', error);
+            alert('Could not add to cart due to a server error.');
+        });
 }
 
 function updateCartDisplay() {
-    if (!document.getElementById('cart-items')) return;
-
-    const items = document.getElementById('cart-items');
+    const itemsContainer = document.getElementById('cart-items');
     const totalSpan = document.getElementById('total');
-    items.innerHTML = '';
+    if (!itemsContainer || !totalSpan) {
+        // Stop the function if the elements are not on the page
+        return;
+    }
+
+    itemsContainer.innerHTML = '';
     let total = 0;
 
     cart.forEach((item, index) => {
@@ -28,7 +48,7 @@ function updateCartDisplay() {
             <button onclick="increaseQty(${index})">+</button>
             <button onclick="decreaseQty(${index})">-</button>
         `;
-        items.appendChild(li);
+        itemsContainer.appendChild(li);
         total += item.price * item.qty;
     });
 
@@ -42,9 +62,23 @@ function removeItem(index) {
 }
 
 function increaseQty(index) {
-    cart[index].qty += 1;
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartDisplay();
+    const item = cart[index];
+    const newQty = item.qty + 1;
+    
+    fetch('check_stock.php?name=' + encodeURIComponent(item.name))
+        .then(response => response.json())
+        .then(data => {
+            if (data.stock >= newQty) {
+                cart[index].qty = newQty;
+                localStorage.setItem('cart', JSON.stringify(cart));
+                updateCartDisplay();
+            } else {
+                alert('Cannot add more. Only ' + data.stock + ' left in stock.');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching stock:', error);
+        });
 }
 
 function decreaseQty(index) {
@@ -58,23 +92,3 @@ function decreaseQty(index) {
 }
 
 window.addEventListener('DOMContentLoaded', updateCartDisplay);
-
-function searchProducts() {
-    const input = document.getElementById("searchInput").value.toLowerCase();
-    const products = document.querySelectorAll(".product h2");
-
-    products.forEach(product => {
-        const card = product.closest(".product");
-        if (product.textContent.toLowerCase().includes(input)) {
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
-        }
-    });
-}
-
-function viewProduct(name, price, image, description) {
-    const product = { name, price, image, description };
-    localStorage.setItem("selectedProduct", JSON.stringify(product));
-    window.location.href = "product_detail.php";
-}
