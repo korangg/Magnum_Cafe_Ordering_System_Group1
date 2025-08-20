@@ -31,31 +31,32 @@
   <link href="assets/css/main.css" rel="stylesheet">
   
 	<style>
-	.background-video {
-  position: absolute; /* Changed from fixed */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 0;
-}
+		.background-video {
+		position: absolute;
+		top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+		<!--filter: brightness(50%); -->
+        }
         .animated-image-right {
-      z-index: 1;
-      width: 600px;
-      position: absolute;
-      top: 450px;
-      right: 200px;
-      animation: moveR 15s infinite;
-    }
-         .animated-image-left {
-      z-index: 3;
-      width: 400px;
-      position: absolute;
-      top: 530px;
-      left: 200px;
-      animation: moveL 15s infinite;
-    }
+            z-index: 1;
+            width: 100px;
+            position: absolute;
+            top: 450px;
+            right: 200px;
+            animation: moveR 15s infinite;
+        }
+        .animated-image-left {
+            z-index: 3;
+            width: 100px;
+            position: absolute;
+            top: 450px;
+            left: 200px;
+            animation: moveL 15s infinite;
+        }
         @keyframes moveR {
             0%, 100% { transform: translateX(0) scale(0.9); }
             50% { transform: translateX(20px) scale(1.0); }
@@ -85,20 +86,6 @@
             font-family: 'Open Sans', sans-serif;
             text-align: right;
         }
-		 .animated-image-right, .animated-image-left {
-        width: 250px;
-        top: auto; bottom: 100px;
-      }
-  
-  
-  
-  
-  
-  
- 
- 
- 
- 
 	</style>
 </head>
 
@@ -109,14 +96,8 @@
     <div class="topbar d-flex align-items-center">
       <div class="container d-flex justify-content-center justify-content-md-between">
         <div class="contact-info d-flex align-items-center">
-          <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">magnumcafeioi@gmail.com</a></i>
-          <i class="bi bi-phone d-flex align-items-center ms-4"><span>+1 5589 55488 55</span></i>
-        </div>
-        <div class="languages d-none d-md-flex align-items-center">
-          <ul>
-            <li>En</li>
-            <li><a href="#">De</a></li>
-          </ul>
+          <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">support@myshop.com</a></i>
+          <i class="bi bi-phone d-flex align-items-center ms-4"><span>+60 12-345 6789</span></i>
         </div>
       </div>
     </div><!-- End Top Bar -->
@@ -132,11 +113,11 @@
 
         <nav id="navmenu" class="navmenu">
           <ul>
-            <li><a href="#hero" class="active">Home<br></a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="#home" class="active">Home<br></a></li>
             <li><a href="#menu">Menu</a></li>
-            <li><a href="#specials">Special</a></li>
-            <a href="#contact">Contact</a>
+            <li><a href="#specials">Specials</a></li>
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#contact">Contact</a></li>
             <li><a href="login.php">Login</a></li>
             <li><a href="register.php">Register</a></li>
           </ul>
@@ -150,8 +131,8 @@
 
   <main class="main">
 
-    <!-- Hero Section -->
-    <section id="hero" class="hero section dark-background">
+    <!-- Home Section -->
+    <section id="home" class="hero section dark-background">
 
     <video class="background-video" autoplay muted loop playsinline>
 		<source src="https://nicolaipalmkvist.com/wp-content/uploads/2024/12/1-1.mp4" type="video/mp4">
@@ -161,87 +142,14 @@
 	<div class="text-overlay-right">Everything<br>better.</div>
 
 	<!-- Bigger Chocolate under text -->
-
-
+<!--	<img src="https://nicolaipalmkvist.com/wp-content/uploads/2024/12/Youtube-Thumbails-13-1-1024x576.png" class="animated-image-left" alt="Chocolate Left">
+	<img src="https://nicolaipalmkvist.com/wp-content/uploads/2024/12/Youtube-Thumbails-16-1-768x432.png" class="animated-image-right" alt="Chocolate Right">
+-->
     </section><!-- /Hero Section -->
 
-    <!-- About Section -->
-    <section id="about" class="about section">
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <div class="row gy-4">
-          <div class="col-lg-6 order-1 order-lg-2">
-            <img src="assets/img/magnum.jpg" class="img-fluid about-img" alt="">
-          </div>
-          <div class="col-lg-6 order-2 order-lg-1 content">
-            <h3>Voluptatem dignissimos provident</h3>
-            <p class="fst-italic">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-              magna aliqua.
-            </p>
-            <ul>
-              <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
-              <li><i class="bi bi-check2-all"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
-              <li><i class="bi bi-check2-all"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate trideta storacalaperda mastiro dolore eu fugiat nulla pariatur.</span></li>
-            </ul>
-            <p>
-              Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-              velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident
-            </p>
-          </div>
-        </div>
-
-      </div>
-
-    </section><!-- /About Section -->
-
-    <!-- Why Us Section -->
-    <section id="why-us" class="why-us section">
-
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>WHY US</h2>
-        <p>Why Choose Our Restaurant</p>
-      </div><!-- End Section Title -->
-
-      <div class="container">
-
-        <div class="row gy-4">
-
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="card-item">
-              <span>01</span>
-              <h4><a href="" class="stretched-link">Lorem Ipsum</a></h4>
-              <p>Ulamco laboris nisi ut aliquip ex ea commodo consequat. Et consectetur ducimus vero placeat</p>
-            </div>
-          </div><!-- Card Item -->
-
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
-            <div class="card-item">
-              <span>02</span>
-              <h4><a href="" class="stretched-link">Repellat Nihil</a></h4>
-              <p>Dolorem est fugiat occaecati voluptate velit esse. Dicta veritatis dolor quod et vel dire leno para dest</p>
-            </div>
-          </div><!-- Card Item -->
-
-          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
-            <div class="card-item">
-              <span>03</span>
-              <h4><a href="" class="stretched-link">Ad ad velit qui</a></h4>
-              <p>Molestiae officiis omnis illo asperiores. Aut doloribus vitae sunt debitis quo vel nam quis</p>
-            </div>
-          </div><!-- Card Item -->
-
-        </div>
-
-      </div>
-
-    </section><!-- /Why Us Section -->
-
-    <!-- Menu Section -->
-    <section id="menu" class="menu section">
+ <!-- Menu Section -->
+    <section id="menu" class="menu section section-black">
 
       <!-- Section Title -->
       <div class="container section-title" data-aos="fade-up">
@@ -360,7 +268,7 @@
 
     </section><!-- /Menu Section -->
 
-    <!-- Specials Section -->
+  <!-- Specials Section -->
     <section id="specials" class="specials section">
 
       <!-- Section Title -->
@@ -461,7 +369,84 @@
 
     </section><!-- /Specials Section -->
 
-    <!-- Events Section -->
+
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+          <div class="col-lg-6 order-1 order-lg-2">
+            <img src="assets/img/about.jpg" class="img-fluid about-img" alt="">
+          </div>
+          <div class="col-lg-6 order-2 order-lg-1 content">
+            <h3>Who We Are</h3>
+            <p class="fst-italic">
+              We’re a local bookstore offering handpicked titles across all genres — from romance and mystery to business and personal growth.
+			  Our mission is to make reading exciting and affordable for everyone!
+            </p>
+			<h3>Contact</h3>
+            <ul>
+              <li><i class="bi bi-check2-all"></i> <span>Email: support@myshop.com</span></li>
+              <li><i class="bi bi-check2-all"></i> <span>Phone: +60 12-345 6789</span></li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+
+    </section><!-- /About Section -->
+	
+	<!-- Why Us Section -->
+    <section id="why-us" class="why-us section">
+
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>WHY US</h2>
+        <p>Why Choose Our Restaurant</p>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="card-item">
+              <span>01</span>
+              <h4><a href="" class="stretched-link">Lorem Ipsum</a></h4>
+              <p>Ulamco laboris nisi ut aliquip ex ea commodo consequat. Et consectetur ducimus vero placeat</p>
+            </div>
+          </div><!-- Card Item -->
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            <div class="card-item">
+              <span>02</span>
+              <h4><a href="" class="stretched-link">Repellat Nihil</a></h4>
+              <p>Dolorem est fugiat occaecati voluptate velit esse. Dicta veritatis dolor quod et vel dire leno para dest</p>
+            </div>
+          </div><!-- Card Item -->
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+            <div class="card-item">
+              <span>03</span>
+              <h4><a href="" class="stretched-link">Ad ad velit qui</a></h4>
+              <p>Molestiae officiis omnis illo asperiores. Aut doloribus vitae sunt debitis quo vel nam quis</p>
+            </div>
+          </div><!-- Card Item -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Why Us Section -->
+	
+   
+
+  
+	
+	<!-- Events Section -->
     <section id="events" class="events section">
 
       <img class="slider-bg" src="assets/img/events-bg.jpg" alt="" data-aos="fade-in">
@@ -575,54 +560,7 @@
 
     </section><!-- /Events Section -->
 
-    <!-- Book A Table Section -->
-    <section id="book-a-table" class="book-a-table section">
-
-      <!-- Section Title -->
-      <div class="container section-title" data-aos="fade-up">
-        <h2>RESERVATION</h2>
-        <p>Book a Table</p>
-      </div><!-- End Section Title -->
-
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
-
-        <form action="forms/book-a-table.php" method="post" role="form" class="php-email-form">
-          <div class="row gy-4">
-            <div class="col-lg-4 col-md-6">
-              <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required="">
-            </div>
-            <div class="col-lg-4 col-md-6">
-              <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required="">
-            </div>
-            <div class="col-lg-4 col-md-6">
-              <input type="text" class="form-control" name="phone" id="phone" placeholder="Your Phone" required="">
-            </div>
-            <div class="col-lg-4 col-md-6">
-              <input type="date" name="date" class="form-control" id="date" placeholder="Date" required="">
-            </div>
-            <div class="col-lg-4 col-md-6">
-              <input type="time" class="form-control" name="time" id="time" placeholder="Time" required="">
-            </div>
-            <div class="col-lg-4 col-md-6">
-              <input type="number" class="form-control" name="people" id="people" placeholder="# of people" required="">
-            </div>
-          </div>
-
-          <div class="form-group mt-3">
-            <textarea class="form-control" name="message" rows="5" placeholder="Message"></textarea>
-          </div>
-
-          <div class="text-center mt-3">
-            <div class="loading">Loading</div>
-            <div class="error-message"></div>
-            <div class="sent-message">Your booking request was sent. We will call back or send an Email to confirm your reservation. Thank you!</div>
-            <button type="submit">Book a Table</button>
-          </div>
-        </form><!-- End Reservation Form -->
-
-      </div>
-
-    </section><!-- /Book A Table Section -->
+  
 
     <!-- Testimonials Section -->
     <section id="testimonials" class="testimonials section">
@@ -891,117 +829,131 @@
       </div>
 
     </section><!-- /Chefs Section -->
+	
+	
+	
+	
+	
+	
+	
+   <!-- Contact Section -->
+    <section id="contact" class="contact section">
 
- 
-   
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Contact</h2>
+        <p>Contact Us</p>
+      </div><!-- End Section Title -->
 
-<!-- Contact -->
-<section id="contact">
+      <div class="mb-5" data-aos="fade-up" data-aos-delay="200">
+        <iframe style="border:0; width: 100%; height: 400px;" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus" frameborder="0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div><!-- End Google Maps -->
 
-  <div class="container">
-    <div class="contact-form">
-     <h2 style="text-align:center; color:#ffcc00; margin-bottom:30px;">Give Feedback</h2>
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-<div style="display:flex; justify-content:center; gap:50px; flex-wrap:wrap;">
+        <div class="row gy-4">
 
-  <!-- Feedback Form -->
-  <form action="#" method="POST" style="flex:1 1 400px; max-width:500px; background:#1e1e2f; padding:40px; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.5); display:flex; flex-direction:column; gap:20px; color:#fff; margin-right:20px;">
+          <div class="col-lg-4">
+            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="300">
+              <i class="bi bi-geo-alt flex-shrink-0"></i>
+              <div>
+                <h3>Location</h3>
+                <p>A108 Adam Street, New York, NY 535022</p>
+              </div>
+            </div><!-- End Info Item -->
 
-    <input type="text" name="name" placeholder="Name" required
-           style="width:100%;padding:15px 20px;border:none;border-radius:10px;background:#2a2a3d;color:#fff;font-size:16px;transition:0.3s;"
-           onfocus="this.style.background='#3b3b55'; this.style.boxShadow='0 0 8px #ffcc00';"
-           onblur="this.style.background='#2a2a3d'; this.style.boxShadow='none';">
+            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+              <i class="bi bi-telephone flex-shrink-0"></i>
+              <div>
+                <h3>Open Hours</h3>
+                <p>Monday-Saturday:<br>11:00 AM - 2300 PM</p>
+              </div>
+            </div><!-- End Info Item -->
 
-    <input type="email" name="email" placeholder="Email" required
-           style="width:100%;padding:15px 20px;border:none;border-radius:10px;background:#2a2a3d;color:#fff;font-size:16px;transition:0.3s;"
-           onfocus="this.style.background='#3b3b55'; this.style.boxShadow='0 0 8px #ffcc00';"
-           onblur="this.style.background='#2a2a3d'; this.style.boxShadow='none';">
+            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="400">
+              <i class="bi bi-telephone flex-shrink-0"></i>
+              <div>
+                <h3>Call Us</h3>
+                <p>+1 5589 55488 55</p>
+              </div>
+            </div><!-- End Info Item -->
 
-    <input type="text" name="subject" placeholder="Subject" required
-           style="width:100%;padding:15px 20px;border:none;border-radius:10px;background:#2a2a3d;color:#fff;font-size:16px;transition:0.3s;"
-           onfocus="this.style.background='#3b3b55'; this.style.boxShadow='0 0 8px #ffcc00';"
-           onblur="this.style.background='#2a2a3d'; this.style.boxShadow='none';">
+            <div class="info-item d-flex" data-aos="fade-up" data-aos-delay="500">
+              <i class="bi bi-envelope flex-shrink-0"></i>
+              <div>
+                <h3>Email Us</h3>
+                <p>info@example.com</p>
+              </div>
+            </div><!-- End Info Item -->
 
-    <textarea name="message" placeholder="Message" rows="6" required
-              style="width:100%;padding:15px 20px;border:none;border-radius:10px;background:#2a2a3d;color:#fff;font-size:16px;transition:0.3s;"
-              onfocus="this.style.background='#3b3b55'; this.style.boxShadow='0 0 8px #ffcc00';"
-              onblur="this.style.background='#2a2a3d'; this.style.boxShadow='none';"></textarea>
+          </div>
 
-    <button type="submit" 
-            style="padding:15px 0;border:none;border-radius:10px;background:#fff;color:#111;font-size:18px;font-weight:bold;cursor:pointer;transition:0.3s;"
-            onmouseover="this.style.background='#e6e6e6'; this.style.transform='translateY(-2px)';"
-            onmouseout="this.style.background='#fff'; this.style.transform='translateY(0)';">Send Message</button>
-  </form>
+          <div class="col-lg-8">
+            <form action="send_feedback.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+              <div class="row gy-4">
 
-  <!-- Contact Info -->
-  <div style="flex:1 1 300px; max-width:300px; background:#1e1e2f; padding:30px; border-radius:15px; box-shadow:0 8px 20px rgba(0,0,0,0.5); color:#fff; line-height:1.8;">
-    <h3 style="color:#ffcc00; margin-bottom:15px;">Contact Info</h3>
-    <p><strong>Address:</strong> 123 Main Street, City</p>
-    <p><strong>Phone:</strong> +60 123 456 789</p>
-    <p><strong>Email:</strong> info@example.com</p>
-    <p><strong>Website:</strong> www.example.com</p>
-  </div>
+                <div class="col-md-6">
+                  <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
+                </div>
 
-</div>
-</section>
-<!-- /Contact Section -->
+                <div class="col-md-6 ">
+                  <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
+                </div>
+
+                <div class="col-md-12">
+                  <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
+                </div>
+
+                <div class="col-md-12">
+                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+                </div>
+
+                <div class="col-md-12 text-center">
+                  <div class="loading">Loading</div>
+                  <div class="error-message"></div>
+                  <div class="sent-message">Your message has been sent. Thank you!</div>
+
+                  <button type="submit">Send Message</button>
+                </div>
+
+              </div>
+            </form>
+          </div><!-- End Contact Form -->
+
 
   </main>
+  
+ <footer id="footer" class="footer" style="text-align:center; padding:40px 0; background:#111; color:#fff;">
 
-  <footer id="footer" class="footer">
-
-    <div class="container footer-top">
-      <div class="row gy-4">
-        <div class="col-lg-4 col-md-6 footer-about">
-          <a href="index.html" class="logo d-flex align-items-center">
-            <span class="sitename">Magnum Cafe</span>
-          </a>
-          <div class="footer-contact pt-3">
-            <p>A108 Adam Street</p>
-            <p>New York, NY 535022</p>
-            <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
-            <p><strong>Email:</strong> <span>info@example.com</span></p>
-          </div>
-          <div class="social-links d-flex mt-4">
-            <a href=""><i class="bi bi-twitter-x"></i></a>
-            <a href=""><i class="bi bi-facebook"></i></a>
-            <a href=""><i class="bi bi-instagram"></i></a>
-            <a href=""><i class="bi bi-linkedin"></i></a>
-          </div>
+  <div class="container footer-top">
+    <div class="row gy-4 justify-content-center">
+      <div class="col-lg-8 footer-about">
+        <a href="index.html" class="logo d-flex justify-content-center align-items-center mb-3">
+          <span class="sitename" style="font-size:28px; font-weight:bold;">Magnum Cafe</span>
+        </a>
+        <div class="footer-contact pt-3" style="font-size:18px; line-height:1.8;">
+          <p>A108 Adam Street</p>
+          <p>New York, NY 535022</p>
+          <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+          <p><strong>Email:</strong> <span>info@example.com</span></p>
         </div>
-
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Useful Links</h4>
-          <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About us</a></li>
-          <li><a href="contact_us.php">Give Feedback</a></li>
-           <li><a href="contact_us.php">Contact Us</a></li>
-            <li><a href="#">Privacy policy</a></li>
-          </ul>
+        <div class="social-links d-flex justify-content-center mt-4" style="font-size:22px;">
+          <a href=""><i class="bi bi-twitter-x"></i></a>
+          <a href=""><i class="bi bi-facebook"></i></a>
+          <a href=""><i class="bi bi-instagram"></i></a>
+          <a href=""><i class="bi bi-linkedin"></i></a>
         </div>
+      </div>
+    </div>
+  </div>
 
-        <div class="col-lg-2 col-md-3 footer-links">
-          <h4>Our Services</h4>
-          <ul>
-            <li><a href="#">Web Design</a></li>
-            <li><a href="#">Web Development</a></li>
-            <li><a href="#">Product Management</a></li>
-            <li><a href="#">Marketing</a></li>
-            <li><a href="#">Graphic Design</a></li>
-          </ul>
-        </div>
+</footer>
 
-        <div class="col-lg-4 col-md-12 footer-newsletter">
-          <h4>Our Newsletter</h4>
-          <p>Subscribe to our newsletter and receive the latest news about our products and services!</p>
-          <form action="forms/newsletter.php" method="post" class="php-email-form">
-            <div class="newsletter-form"><input type="email" name="email"><input type="submit" value="Subscribe"></div>
-            <div class="loading">Loading</div>
-            <div class="error-message"></div>
-            <div class="sent-message">Your subscription request has been sent. Thank you!</div>
-          </form>
-        </div>
+       
+
+        
+
+        
 
       </div>
     </div>
@@ -1018,6 +970,7 @@
     </div>
 
   </footer>
+
 
   <!-- Scroll Top -->
   <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
