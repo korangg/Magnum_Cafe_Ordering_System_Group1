@@ -10,7 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     mysqli_query($conn, "INSERT INTO feedback (name, email, message, submitted_at) 
                          VALUES ('$name', '$email', '$message', NOW())");
 
-    header("Location: contact_us.php?sent=1");
+    if (isset($_SERVER['HTTP_REFERER'])) {
+    header("Location: " . $_SERVER['HTTP_REFERER']);
+	}
     exit();
 }
 ?>
