@@ -35,9 +35,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $_SESSION["usertype"] = $user["usertype"];
 
             if ($usertype === "admin") {
-                header("Location: adminhome.php");
+                header("Location: temp_dashboard/pages/adminDashboard.php");
             } elseif ($usertype === "staff") {
-                header("Location: staffhome.php");
+                header("Location: temp_dashboard/pages/staffDashboard.php");
             } else {
                 header("Location: userhome.php");
             }
