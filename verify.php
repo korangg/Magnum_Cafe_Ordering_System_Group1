@@ -27,7 +27,7 @@ if (isset($_GET["token"])) {
         mysqli_stmt_execute($update_stmt);
 
         $status = "success";
-        $message = "Your email has been verified! You can now <a href='login.php'>Login</a>.";
+        $message = "Your email has been verified! You can now <a href='login.php' style='text-decoration: underline'>Login</a>.";
     } else {
         $message = "❌ Invalid or expired verification link.";
     }
