@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             $mail->isHTML(true);
             $mail->Subject = "Reset Your Password";
             // IMPORTANT: Make sure this URL is correct for your project path
-            $resetLink = "http://localhost/ntah_ah/ecommerce_website_final/reset_password.php?token=$token";
+            $resetLink = "http://localhost/MASTER PROJECT - MAGNUM CAFE SYSTEM/Magnum_Cafe_Ordering_System_Group1/reset_password.php?token=$token";
             $mail->Body = "
                 <h3>Password Reset Requested</h3>
                 <p>Click below to reset your password:</p>
