@@ -35,7 +35,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["password"]) && empty(
     $update = mysqli_stmt_execute($stmt);
 
     if ($update) {
-        $success = "✅ Password reset successful. You can now <a href='login.php'>Login</a>.";
+        $success = "✅ Password reset successful. You can now <a href='login.php' style='text-decoration: underline'>Login</a>.";
     } else {
         $error = "❌ Could not update password. Please try again.";
     }
