@@ -1,9 +1,5 @@
 <?php
 session_start();
-if (!isset($_SESSION["username"]) || $_SESSION["usertype"] !== "admin") {
-    header("Location: login.php");
-    exit();
-}
 
 $conn = mysqli_connect("localhost", "root", "", "ecommerce_db");
 
