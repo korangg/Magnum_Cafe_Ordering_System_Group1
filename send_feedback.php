@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                          VALUES ('$name', '$email', '$message', NOW())");
 
     if (isset($_SERVER['HTTP_REFERER'])) {
-    header("Location: " . $_SERVER['HTTP_REFERER']);
+    echo "OK";
 	}
     exit();
 }
