@@ -1,6 +1,16 @@
 <?php
 session_start();
+if (!isset($_SESSION["username"]) || 
+    !isset($_SESSION["usertype"]) || 
+    !in_array($_SESSION["usertype"], ["admin", "staff"])) 
+{
+    header("Location: login.php");
+    exit();
+}
 
+// ✅ Set dashboard link based on usertype
+$dashboardLink = ($_SESSION["usertype"] === "admin") ? "../pages/adminDashboard.php" : "../pages/staffDashboard.php";
+	
 $conn = mysqli_connect("localhost", "root", "", "ecommerce_db");
 
 // ✅ Fetch Lists
@@ -64,7 +74,7 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link  " href="../pages/adminDashboard.php">
+          <a class="nav-link  " href="<?php echo $dashboardLink; ?>">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>shop </title>
