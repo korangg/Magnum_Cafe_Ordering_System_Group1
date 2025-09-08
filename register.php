@@ -26,52 +26,82 @@ $error = "";
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $username = trim($_POST["username"]);
     $email = trim($_POST["email"]);
-    $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
-    $usertype = 'user';
-    $verify_token = md5(uniqid($username, true));
+    $password = trim($_POST["password"], PASSWORD_DEFAULT);
+	
+	// ✅ Password validation/ must have lowercase, uppercase, digit, and be at least 6 chars
+    if (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/', $password)) {
+        $error = "❌ Invalid password. It must be at least 6 characters long and include an uppercase letter, lowercase letter, and number.";
+	} else {
+		// ✅ Check if username exists
+        $checkUser = mysqli_prepare($conn, "SELECT id FROM users WHERE username = ?");
+        mysqli_stmt_bind_param($checkUser, "s", $username);
+        mysqli_stmt_execute($checkUser);
+        mysqli_stmt_store_result($checkUser);
 
-    // Insert user into database
-    $sql = "INSERT INTO users (username, email, password, usertype, verify_token, verified)
-            VALUES (?, ?, ?, ?, ?, 0)";
-    $stmt = mysqli_prepare($conn, $sql);
-    mysqli_stmt_bind_param($stmt, "sssss", $username, $email, $password, $usertype, $verify_token);
+        if (mysqli_stmt_num_rows($checkUser) > 0) {
+            $error = "❌ Username has already been taken.";
+		} else {
+			// ✅ Check if email exists
+            $checkEmail = mysqli_prepare($conn, "SELECT id FROM users WHERE email = ?");
+            mysqli_stmt_bind_param($checkEmail, "s", $email);
+            mysqli_stmt_execute($checkEmail);
+            mysqli_stmt_store_result($checkEmail);
 
-    if (mysqli_stmt_execute($stmt)) {
-        // ✅ Dynamically create the verification link
-        $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
-        $host = $_SERVER['HTTP_HOST'];
-        $path = rtrim(dirname($_SERVER['PHP_SELF']), '/\\'); // Current folder path
-        $verifyLink = "$protocol://$host$path/verify.php?token=$verify_token";
+            if (mysqli_stmt_num_rows($checkEmail) > 0) {
+                $error = "❌ This email has already been registered.";
+			} else {
+				$password = password_hash($password, PASSWORD_DEFAULT);
+				$usertype = 'user';
+				$verify_token = md5(uniqid($username, true));
+				
+				// Insert user into database
+				$sql = "INSERT INTO users (username, email, password, usertype, verify_token, verified)
+						VALUES (?, ?, ?, ?, ?, 0)";
+				$stmt = mysqli_prepare($conn, $sql);
+				mysqli_stmt_bind_param($stmt, "sssss", $username, $email, $password, $usertype, $verify_token);
 
-        // 📨 Send email
-        $mail = new PHPMailer(true);
-        try {
-            $mail->isSMTP();
-            $mail->Host = 'smtp.gmail.com';
-            $mail->SMTPAuth = true;
-            $mail->Username = $gmailUser;
-            $mail->Password = $gmailAppPassword;
-            $mail->SMTPSecure = 'tls';
-            $mail->Port = 587;
+				if (mysqli_stmt_execute($stmt)) {
+					// ✅ Dynamically create the verification link
+					$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? "https" : "http";
+					$host = $_SERVER['HTTP_HOST'];
+					$path = rtrim(dirname($_SERVER['PHP_SELF']), '/\\'); // Current folder path
+					$verifyLink = "$protocol://$host$path/verify.php?token=$verify_token";
 
-            $mail->setFrom($gmailUser, 'MyShop');
-            $mail->addAddress($email, $username);
-            $mail->isHTML(true);
-            $mail->Subject = 'Verify Your Email';
-            $mail->Body = "
-                <h3>Welcome, $username!</h3>
-                <p>Please verify your email address by clicking the button below:</p>
-                <a href='$verifyLink' style='background:#4e54c8;color:white;padding:10px 20px;border-radius:5px;text-decoration:none;'>Verify Now</a>
-            ";
+					// 📨 Send email
+					$mail = new PHPMailer(true);
+					try {
+						$mail->isSMTP();
+						$mail->Host = 'smtp.gmail.com';
+						$mail->SMTPAuth = true;
+						$mail->Username = $gmailUser;
+						$mail->Password = $gmailAppPassword;
+						$mail->SMTPSecure = 'tls';
+						$mail->Port = 587;
 
-            $mail->send();
-            $success = "✅ Registration successful. Please check your email to verify your account.";
-        } catch (Exception $e) {
-            $error = "❌ Registration succeeded, but email failed: " . $mail->ErrorInfo;
-        }
-    } else {
-        $error = "❌ Registration failed: " . mysqli_error($conn);
-    }
+						$mail->setFrom($gmailUser, 'MyShop');
+						$mail->addAddress($email, $username);
+						$mail->isHTML(true);
+						$mail->Subject = 'Verify Your Email';
+						$mail->Body = "
+							<h3>Welcome, $username!</h3>
+							<p>Please verify your email address by clicking the button below:</p>
+							<a href='$verifyLink' style='background:#4e54c8;color:white;padding:10px 20px;border-radius:5px;text-decoration:none;'>Verify Now</a>
+						";
+
+						$mail->send();
+						$success = "✅ Registration successful. Please check your email to verify your account.";
+					} catch (Exception $e) {
+						$error = "❌ Registration succeeded, but email failed: " . $mail->ErrorInfo;
+					}
+				} else {
+					$error = "❌ Registration failed: " . mysqli_error($conn);
+				}
+			}
+		}
+	}
+    
+
+    
 }
 ?>
 <!DOCTYPE html>
