@@ -263,7 +263,8 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
             <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Dashboard</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0">Dashboard</h6>
+         <a class="btn btn-outline-primary btn-sm mb-0" href="profile.php">Profile</a>
+
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
           <div class="ms-md-auto pe-md-3 d-flex align-items-center">
