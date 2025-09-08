@@ -7,6 +7,24 @@ if (!isset($_SESSION["username"]) || $_SESSION['usertype'] !== 'user') {
 }
 // Get the username from the session
 $username = htmlspecialchars($_SESSION["username"]);
+
+// Database connection using mysqli_connect
+$conn = mysqli_connect("localhost", "root", "", "ecommerce_db");
+
+// Check connection
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+// Fetch user data
+$sql = "SELECT username, email FROM users WHERE username = ?";
+$stmt = mysqli_prepare($conn, $sql);
+mysqli_stmt_bind_param($stmt, "s", $_SESSION["username"]); // Use session username to fetch data
+mysqli_stmt_execute($stmt);
+mysqli_stmt_bind_result($stmt, $name, $email);
+mysqli_stmt_fetch($stmt);
+mysqli_stmt_close($stmt);
+mysqli_close($conn);
 ?>
 
 <!DOCTYPE html>
@@ -957,7 +975,7 @@ $username = htmlspecialchars($_SESSION["username"]);
       </div><!-- End Section Title -->
 
       <div class="mb-5" data-aos="fade-up" data-aos-delay="200">
-        <iframe style="border:0; width: 100%; height: 400px;" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3984.46535224052!2d101.7165646744704!3d2.9682943542388105!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31cdca11e9d0d76b%3A0xc61cfdea77542db3!2sIOI%20City%20Mall%2C%2062050%20Serdang%2C%20Selangor!5e0!3m2!1sen!2smy!4v1756353990932!5m2!1sen!2smy" frameborder="0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <iframe style="border:0; width: 100%; height: 400px;" src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d48389.78314118045!2d-74.006138!3d40.710059!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a22a3bda30d%3A0xb89d1fe6bc499443!2sDowntown%20Conference%20Center!5e0!3m2!1sen!2sus!4v1676961268712!5m2!1sen!2sus" frameborder="0" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div><!-- End Google Maps -->
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -969,7 +987,7 @@ $username = htmlspecialchars($_SESSION["username"]);
               <i class="bi bi-geo-alt flex-shrink-0"></i>
               <div>
                 <h3>Location</h3>
-                <p>3rd Floor (South Court), Mid Valley Megamall, Lingkaran Syed Putra, 59200 Kuala Lumpur, Malaysia.</p>
+                <p>A108 Adam Street, New York, NY 535022</p>
               </div>
             </div><!-- End Info Item -->
 
@@ -977,7 +995,7 @@ $username = htmlspecialchars($_SESSION["username"]);
               <i class="bi bi-telephone flex-shrink-0"></i>
               <div>
                 <h3>Open Hours</h3>
-                <p>Monday-Sunday:<br>10:00 AM - 10:00 PM</p>
+                <p>Monday-Saturday:<br>11:00 AM - 2300 PM</p>
               </div>
             </div><!-- End Info Item -->
 
@@ -985,7 +1003,7 @@ $username = htmlspecialchars($_SESSION["username"]);
               <i class="bi bi-telephone flex-shrink-0"></i>
               <div>
                 <h3>Call Us</h3>
-                <p>+60 12-345 6789</p>
+                <p>+1 5589 55488 55</p>
               </div>
             </div><!-- End Info Item -->
 
@@ -993,43 +1011,43 @@ $username = htmlspecialchars($_SESSION["username"]);
               <i class="bi bi-envelope flex-shrink-0"></i>
               <div>
                 <h3>Email Us</h3>
-                <p>support@myshop.com</p>
+                <p>info@example.com</p>
               </div>
             </div><!-- End Info Item -->
 
           </div>
+		  
+		  <div class="col-lg-8">
+			<form action="send_feedback.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+				<div class="row gy-4">
 
-          <div class="col-lg-8">
-            <form action="send_feedback.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
-              <div class="row gy-4">
+					<div class="col-md-6">
+						<input type="text" name="name" class="form-control" placeholder="Your Name" value="<?= htmlspecialchars($name) ?>" required="">
+					</div>
 
-                <div class="col-md-6">
-                  <input type="text" name="name" class="form-control" placeholder="Your Name" required="">
-                </div>
+					<div class="col-md-6">
+						<input type="email" class="form-control" name="email" placeholder="Your Email" value="<?= htmlspecialchars($email) ?>" required="">
+					</div>
 
-                <div class="col-md-6 ">
-                  <input type="email" class="form-control" name="email" placeholder="Your Email" required="">
-                </div>
+					<div class="col-md-12">
+						<input type="text" class="form-control" name="subject" placeholder="Subject" required="">
+					</div>
 
-                <div class="col-md-12">
-                  <input type="text" class="form-control" name="subject" placeholder="Subject" required="">
-                </div>
+					<div class="col-md-12">
+						<textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
+					</div>
 
-                <div class="col-md-12">
-                  <textarea class="form-control" name="message" rows="6" placeholder="Message" required=""></textarea>
-                </div>
+					<div class="col-md-12 text-center">
+						<div class="loading">Loading</div>
+						<div class="error-message"></div>
+						<div class="sent-message">Your message has been sent. Thank you!</div>
 
-                <div class="col-md-12 text-center">
-                  <div class="loading">Loading</div>
-                  <div class="error-message"></div>
-                  <div class="sent-message">Your message has been sent. Thank you!</div>
+						<button type="submit">Send Message</button>
+					</div>
 
-                  <button type="submit">Send Message</button>
-                </div>
-
-              </div>
-            </form>
-          </div><!-- End Contact Form -->
+				</div>
+			</form>
+		  </div><!-- End Contact Form -->
 
 	
 	</main>
@@ -1042,10 +1060,10 @@ $username = htmlspecialchars($_SESSION["username"]);
                       <span class="sitename">Magnum Cafe</span>
                   </a>
                   <div class="footer-contact pt-3">
-					  <p>3rd Floor (South Court), Mid Valley Megamall</p>
-					  <p>Lingkaran Syed Putra, 59200 Kuala Lumpur, Malaysia</p>
-					  <p class="mt-3"><strong>Phone:</strong> <span>+60 12-345 6789</span></p>
-					  <p><strong>Email:</strong> <span>support@myshop.com</span></p>
+                      <p>A108 Adam Street</p>
+                      <p>New York, NY 535022</p>
+                      <p class="mt-3"><strong>Phone:</strong> <span>+1 5589 55488 55</span></p>
+                      <p><strong>Email:</strong> <span>info@example.com</span></p>
                   </div>
                   <div class="social-links d-flex justify-content-center mt-4">
                       <a href=""><i class="bi bi-twitter-x"></i></a>
