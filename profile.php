@@ -24,37 +24,6 @@ mysqli_stmt_bind_param($stmt, "s", $username);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $userData = mysqli_fetch_assoc($result);
-
-// Update profile
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $newName = trim($_POST["username"]);
-    $profilePic = $userData['profile_pic'];
-
-    // Handle image upload
-    if (!empty($_FILES["profile_pic"]["name"])) {
-        $targetDir = "uploads/";
-        if (!is_dir($targetDir)) mkdir($targetDir);
-        $fileName = time() . "_" . basename($_FILES["profile_pic"]["name"]);
-        $targetFile = $targetDir . $fileName;
-        if (move_uploaded_file($_FILES["profile_pic"]["tmp_name"], $targetFile)) {
-            $profilePic = $fileName;
-        }
-    }
-
-    // Update DB
-    $updateSql = "UPDATE users SET username = ?, profile_pic = ? WHERE username = ?";
-    $updateStmt = mysqli_prepare($conn, $updateSql);
-    mysqli_stmt_bind_param($updateStmt, "sss", $newName, $profilePic, $username);
-    if (mysqli_stmt_execute($updateStmt)) {
-        $_SESSION["username"] = $newName;
-        $message = "✅ Profile updated successfully!";
-        $username = $newName;
-        $userData['profile_pic'] = $profilePic;
-        $userData['username'] = $newName;
-    } else {
-        $message = "❌ Failed to update profile.";
-    }
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -120,6 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             margin-left: auto;
             display: flex;
             gap: 20px;
+            align-items: center;
         }
 
         .header-icons .icon-container {
@@ -140,6 +110,21 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         
         .header-icons a {
             color: #e0e0e0;
+            text-decoration: none;
+        }
+
+        /* Home Button */
+        .btn-home {
+            background: #bb86fc;
+            padding: 8px 14px;
+            border-radius: 8px;
+            color: white !important;
+            font-size: 14px;
+            font-weight: 500;
+            transition: 0.3s;
+        }
+        .btn-home:hover {
+            background: #9a67ea;
         }
 
         .main-content {
@@ -222,7 +207,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         .activity-icon-item:nth-child(3) i { color: #8bc34a; }
         .activity-icon-item:nth-child(4) i { color: #bb86fc; }
 
-
         .support-section {
             background-color: #1f1f1f;
             border-radius: 15px;
@@ -290,12 +274,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         .about-us-section a:hover {
             color: #bb86fc;
         }
-        
-        /* Utility Classes */
-        .flex-row { display: flex; align-items: center; }
-        .flex-row a { margin-right: 10px; }
-        .flex-grow { flex-grow: 1; }
-
     </style>
 </head>
 <body>
@@ -310,6 +288,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <a href="#" class="icon-container"><i class="fa-solid fa-bell"></i><span class="badge">4</span></a>
             <a href="#" class="icon-container"><i class="fa-solid fa-cart-shopping"></i><span class="badge">8</span></a>
             <a href="#"><i class="fa-solid fa-gear"></i></a>
+            <!-- Home Button -->
+            <a href="userhome.php" class="btn-home">Home</a>
         </div>
     </div>
 
@@ -364,13 +344,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
 
         <div class="about-us-section">
-            <h2>About Us</h2>
-            <a href="#">
-                <p>About Us</p>
-                <span class="arrow">&gt;</span>
-            </a>
-            <a href="#">
-                <p>Terms & Conditions</p>
+            <h2>Account</h2>
+            <a href="change_password.php">
+                <p>Change Password</p>
                 <span class="arrow">&gt;</span>
             </a>
         </div>
