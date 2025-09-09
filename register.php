@@ -7,8 +7,8 @@ require 'phpmailer/SMTP.php';
 require 'phpmailer/Exception.php';
 
 // 📨 Gmail credentials
-$gmailUser = "mustafa5252005@gmail.com";       // ← Replace with your Gmail
-$gmailAppPassword = "zqnfwbfchcnrtmhr";        // ← Replace with your 16-char app password
+$gmailUser = "muhammadizzuddinfarhan2005@gmail.com";       // ← Replace with your Gmail
+$gmailAppPassword = "zlcvvfzwhvwlnhuh";        // ← Replace with your 16-char app password
 
 // 🗄️ Database connection
 $host = "localhost";
