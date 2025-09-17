@@ -364,121 +364,61 @@ mysqli_close($conn);
 	<div class="text-overlay-right">Everything<br>better.</div>
 
     </section>
-	
 	<section id="menu" class="menu section section-black">
-        <div class="container section-title" data-aos="fade-up">
-            <h2>Menu</h2>
-            <p>Check Our Tasty Menu</p>
-        </div>
-        <div class="container isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
+    <div class="container section-title" data-aos="fade-up">
+        <h2>Menu</h2>
+        <p>Check Our Tasty Menu</p>
+    </div>
+    <div class="container isotope-layout" data-default-filter="*" data-layout="masonry" data-sort="original-order">
 
-            <div class="row" data-aos="fade-up" data-aos-delay="100">
-                <div class="col-lg-12 d-flex justify-content-center">
-                    <ul class="menu-filters isotope-filters">
-                        <li data-filter="*" class="filter-active">All</li>
-                        <li data-filter=".filter-starters">Starters</li>
-                        <li data-filter=".filter-salads">Salads</li>
-                        <li data-filter=".filter-specialty">Specialty</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="row isotope-container" data-aos="fade-up" data-aos-delay="200">
-                <!-- Each food item has a new, clickable link to product_detail.php -->
-                <!-- The URL parameters pass the name, price, and image of the item -->
-                <div class="col-lg-6 menu-item isotope-item filter-starters">
-                    <img src="assets/img/menu/lobster-bisque.jpg" class="menu-img" alt="Lobster Bisque">
-                    <div class="menu-content">
-                        <a href="product_detail.php?name=Lobster%20Bisque&price=5.95&image=lobster-bisque.jpg">Lobster Bisque</a><span>$5.95</span>
-                    </div>
-                    <div class="menu-ingredients">
-                        Lorem, deren, trataro, filede, nerada
-                    </div>
-                </div>
-                
-                <div class="col-lg-6 menu-item isotope-item filter-specialty">
-                    <img src="assets/img/menu/bread-barrel.jpg" class="menu-img" alt="Bread Barrel">
-                    <div class="menu-content">
-                        <a href="product_detail.php?name=Bread%20Barrel&price=6.95&image=bread-barrel.jpg">Bread Barrel</a><span>$6.95</span>
-                    </div>
-                    <div class="menu-ingredients">
-                        Lorem, deren, trataro, filede, nerada
-                    </div>
-                </div>
-
-                <div class="col-lg-6 menu-item isotope-item filter-starters">
-                    <img src="assets/img/menu/cake.jpg" class="menu-img" alt="Crab Cake">
-                    <div class="menu-content">
-                        <a href="product_detail.php?name=Crab%20Cake&price=7.95&image=cake.jpg">Crab Cake</a><span>$7.95</span>
-                    </div>
-                    <div class="menu-ingredients">
-                        A delicate crab cake served on a toasted roll with lettuce and tartar sauce
-                    </div>
-                </div>
-
-                <div class="col-lg-6 menu-item isotope-item filter-salads">
-                    <img src="assets/img/menu/caesar.jpg" class="menu-img" alt="Caesar Selections">
-                    <div class="menu-content">
-                        <a href="product_detail.php?name=Caesar%20Selections&price=8.95&image=caesar.jpg">Caesar Selections</a><span>$8.95</span>
-                    </div>
-                    <div class="menu-ingredients">
-                        Lorem, deren, trataro, filede, nerada
-                    </div>
-                </div>
-
-                <div class="col-lg-6 menu-item isotope-item filter-specialty">
-                    <img src="assets/img/menu/tuscan-grilled.jpg" class="menu-img" alt="Tuscan Grilled">
-                    <div class="menu-content">
-                        <a href="product_detail.php?name=Tuscan%20Grilled&price=9.95&image=tuscan-grilled.jpg">Tuscan Grilled</a><span>$9.95</span>
-                    </div>
-                    <div class="menu-ingredients">
-                        Grilled chicken with provolone, artichoke hearts, and roasted red pesto
-                    </div>
-                </div>
-
-                <div class="col-lg-6 menu-item isotope-item filter-starters">
-                    <img src="assets/img/menu/mozzarella.jpg" class="menu-img" alt="Mozzarella Stick">
-                    <div class="menu-content">
-                        <a href="product_detail.php?name=Mozzarella%20Stick&price=4.95&image=mozzarella.jpg">Mozzarella Stick</a><span>$4.95</span>
-                    </div>
-                    <div class="menu-ingredients">
-                        Lorem, deren, trataro, filede, nerada
-                    </div>
-                </div>
-
-                <div class="col-lg-6 menu-item isotope-item filter-salads">
-                    <img src="assets/img/menu/greek-salad.jpg" class="menu-img" alt="Greek Salad">
-                    <div class="menu-content">
-                        <a href="product_detail.php?name=Greek%20Salad&price=9.95&image=greek-salad.jpg">Greek Salad</a><span>$9.95</span>
-                    </div>
-                    <div class="menu-ingredients">
-                        Fresh spinach, crisp romaine, tomatoes, and Greek olives
-                    </div>
-                </div>
-
-                <div class="col-lg-6 menu-item isotope-item filter-salads">
-                    <img src="assets/img/menu/spinach-salad.jpg" class="menu-img" alt="Spinach Salad">
-                    <div class="menu-content">
-                        <a href="product_detail.php?name=Spinach%20Salad&price=9.95&image=spinach-salad.jpg">Spinach Salad</a><span>$9.95</span>
-                    </div>
-                    <div class="menu-ingredients">
-                        Fresh spinach with mushrooms, hard boiled egg, and warm bacon vinaigrette
-                    </div>
-                </div>
-
-                <div class="col-lg-6 menu-item isotope-item filter-specialty">
-                    <img src="assets/img/menu/lobster-roll.jpg" class="menu-img" alt="Lobster Roll">
-                    <div class="menu-content">
-                        <a href="product_detail.php?name=Lobster%20Roll&price=12.95&image=lobster-roll.jpg">Lobster Roll</a><span>$12.95</span>
-                    </div>
-                    <div class="menu-ingredients">
-                        Plump lobster meat, mayo and crisp lettuce on a toasted bulky roll
-                    </div>
-                </div>
+        <div class="row" data-aos="fade-up" data-aos-delay="100">
+            <div class="col-lg-12 d-flex justify-content-center">
+                <ul class="menu-filters isotope-filters">
+                    <li data-filter="*" class="filter-active">All</li>
+                    <li data-filter=".filter-starters">Starters</li>
+                    <li data-filter=".filter-salads">Salads</li>
+                    <li data-filter=".filter-specialty">Specialty</li>
+                </ul>
             </div>
         </div>
-    </section>
-	
+
+        <div class="row isotope-container" data-aos="fade-up" data-aos-delay="200">
+            <?php
+            $conn = new mysqli("localhost", "root", "", "ecommerce_db");
+            if ($conn->connect_error) {
+                die("Connection failed: " . $conn->connect_error);
+            }
+
+            $sql = "SELECT * FROM products ORDER BY id ASC";
+            $result = $conn->query($sql);
+
+            if ($result && $result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    // map DB category into filter class
+                    $categoryClass = "filter-" . strtolower($row['category']);
+                    ?>
+                    <div class="col-lg-6 menu-item isotope-item <?php echo $categoryClass; ?>">
+                        <img src="assets/img/menu/<?php echo htmlspecialchars($row['image']); ?>" class="menu-img" alt="<?php echo htmlspecialchars($row['name']); ?>">
+                        <div class="menu-content">
+                            <a href="product_detail.php?id=<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['name']); ?></a>
+                            <span>$<?php echo number_format($row['price'], 2); ?></span>
+                        </div>
+                        <div class="menu-ingredients">
+                            <?php echo htmlspecialchars($row['description']); ?>
+                        </div>
+                    </div>
+                    <?php
+                }
+            } else {
+                echo "<p>No menu items found in database.</p>";
+            }
+
+            $conn->close();
+            ?>
+        </div>
+    </div>
+</section>
+
 	
 
 
