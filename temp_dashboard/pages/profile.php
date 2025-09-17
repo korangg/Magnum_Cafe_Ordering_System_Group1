@@ -239,7 +239,7 @@ if (isset($_POST['update_profile'])) {
             <h1>Hi <?= htmlspecialchars($userData['username']) ?></h1>
         </div>
         <div class="header-icons">
-         
+            <a href="userhome.php" class="btn-home">Home</a>
         </div>
     </div>
 
