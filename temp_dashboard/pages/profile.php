@@ -18,12 +18,48 @@ $username = $_SESSION["username"];
 $message = "";
 
 // Fetch user data
-$sql = "SELECT username, email, profile_pic FROM users WHERE username = ?";
+$sql = "SELECT username, email, phone, profile_pic FROM users WHERE username = ?";
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, "s", $username);
 mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $userData = mysqli_fetch_assoc($result);
+
+// Handle profile update (username + phone)
+if (isset($_POST['update_profile'])) {
+    $newUsername = trim($_POST['new_username']);
+    $newPhone = trim($_POST['new_phone']);
+
+    if (!empty($newUsername) && !empty($newPhone)) {
+        // Check if username already exists (exclude current user)
+        $checkUserSql = "SELECT id FROM users WHERE username = ? AND username != ?";
+        $checkUserStmt = mysqli_prepare($conn, $checkUserSql);
+        mysqli_stmt_bind_param($checkUserStmt, "ss", $newUsername, $username);
+        mysqli_stmt_execute($checkUserStmt);
+        $checkUserResult = mysqli_stmt_get_result($checkUserStmt);
+
+        if (mysqli_num_rows($checkUserResult) > 0) {
+            $message = "⚠️ Username already taken.";
+        } else {
+            // Update username + phone
+            $updateSql = "UPDATE users SET username = ?, phone = ? WHERE username = ?";
+            $updateStmt = mysqli_prepare($conn, $updateSql);
+            mysqli_stmt_bind_param($updateStmt, "sss", $newUsername, $newPhone, $username);
+
+            if (mysqli_stmt_execute($updateStmt)) {
+                $_SESSION["username"] = $newUsername; // Update session
+                $username = $newUsername;
+                $userData['username'] = $newUsername;
+                $userData['phone'] = $newPhone;
+                $message = "✅ Profile updated successfully!";
+            } else {
+                $message = "❌ Error updating profile.";
+            }
+        }
+    } else {
+        $message = "⚠️ All fields are required.";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,28 +128,11 @@ $userData = mysqli_fetch_assoc($result);
             align-items: center;
         }
 
-        .header-icons .icon-container {
-            position: relative;
-            color: #e0e0e0;
-        }
-
-        .header-icons .icon-container .badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background-color: #cf6679;
-            color: white;
-            font-size: 10px;
-            border-radius: 50%;
-            padding: 2px 5px;
-        }
-        
         .header-icons a {
             color: #e0e0e0;
             text-decoration: none;
         }
 
-        /* Home Button */
         .btn-home {
             background: #bb86fc;
             padding: 8px 14px;
@@ -132,12 +151,11 @@ $userData = mysqli_fetch_assoc($result);
             margin-top: -30px;
         }
 
-        .dashboard-card {
+        .dashboard-card, .support-section, .about-us-section {
             background-color: #1f1f1f;
             border-radius: 15px;
             padding: 20px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            text-align: center;
             margin-bottom: 20px;
         }
 
@@ -152,73 +170,6 @@ $userData = mysqli_fetch_assoc($result);
             font-weight: 600;
             color: #e0e0e0;
             margin-top: 5px;
-        }
-
-        .activity-history {
-            background-color: #1f1f1f;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-        }
-
-        .activity-history-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-
-        .activity-history-header h2 {
-            font-size: 18px;
-            font-weight: 500;
-        }
-
-        .activity-history-header a {
-            color: #bb86fc;
-            text-decoration: none;
-            font-weight: 500;
-        }
-
-        .activity-icons {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .activity-icon-item {
-            text-align: center;
-            flex: 1;
-            padding: 10px;
-        }
-
-        .activity-icon-item i {
-            font-size: 30px;
-            color: #ffc107;
-            margin-bottom: 5px;
-        }
-        
-        .activity-icon-item p {
-            font-size: 12px;
-            color: #b0b0b0;
-            font-weight: 400;
-        }
-        
-        .activity-icon-item:nth-child(2) i { color: #81d4fa; }
-        .activity-icon-item:nth-child(3) i { color: #8bc34a; }
-        .activity-icon-item:nth-child(4) i { color: #bb86fc; }
-
-        .support-section {
-            background-color: #1f1f1f;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-            margin-bottom: 20px;
-        }
-
-        .support-section h2 {
-            font-size: 18px;
-            font-weight: 500;
-            margin-bottom: 10px;
         }
 
         .support-item {
@@ -248,15 +199,8 @@ $userData = mysqli_fetch_assoc($result);
             font-size: 16px;
             color: #bb86fc;
         }
-        
-        .about-us-section {
-            background-color: #1f1f1f;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
 
-        .about-us-section h2 {
+        .about-us-section h2, .support-section h2 {
             font-size: 18px;
             font-weight: 500;
             margin-bottom: 10px;
@@ -274,6 +218,16 @@ $userData = mysqli_fetch_assoc($result);
         .about-us-section a:hover {
             color: #bb86fc;
         }
+
+        input, button {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        input[readonly] {
+            background-color: #2a2a2a;
+            color: #999;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -285,71 +239,50 @@ $userData = mysqli_fetch_assoc($result);
             <h1>Hi <?= htmlspecialchars($userData['username']) ?></h1>
         </div>
         <div class="header-icons">
-            <a href="#" class="icon-container"><i class="fa-solid fa-bell"></i><span class="badge">4</span></a>
-            <a href="#" class="icon-container"><i class="fa-solid fa-cart-shopping"></i><span class="badge">8</span></a>
-            <a href="#"><i class="fa-solid fa-gear"></i></a>
-            <!-- Home Button -->
-     
+         
         </div>
     </div>
 
     <div class="main-content">
+        <!-- Profile Update Card -->
         <div class="dashboard-card">
-            <h3>My Wallet</h3>
-            <p class="balance">MYR 0.00</p>
+            <h3>Your Profile</h3>
+            <p class="balance">Username: <?= htmlspecialchars($userData['username']) ?></p>
+            <p style="margin-top:5px; font-size:14px; color:#b0b0b0;">Email: <?= htmlspecialchars($userData['email']) ?></p>
+            <p style="margin-top:5px; font-size:14px; color:#b0b0b0;">Phone: <?= htmlspecialchars($userData['phone']) ?></p>
+
+            <form action="" method="POST" style="margin-top:15px; text-align:left;">
+                <label style="font-size:14px; color:#b0b0b0;">New Username</label><br>
+                <input type="text" name="new_username" value="<?= htmlspecialchars($userData['username']) ?>" 
+                       style="padding:8px; border-radius:8px; border:1px solid #333; width:100%; margin-bottom:10px;" required>
+
+                <label style="font-size:14px; color:#b0b0b0;">Email (cannot change)</label><br>
+                <input type="email" value="<?= htmlspecialchars($userData['email']) ?>" readonly
+                       style="padding:8px; border-radius:8px; border:1px solid #333; width:100%; margin-bottom:10px;">
+
+                <label style="font-size:14px; color:#b0b0b0;">Phone Number</label><br>
+                <input type="text" name="new_phone" value="<?= htmlspecialchars($userData['phone']) ?>" 
+                       style="padding:8px; border-radius:8px; border:1px solid #333; width:100%; margin-bottom:10px;" required>
+
+                <button type="submit" name="update_profile" 
+                        style="padding:10px 14px; border:none; border-radius:8px; background:#bb86fc; color:#fff; cursor:pointer; width:100%;">
+                    Update Profile
+                </button>
+            </form>
+
+            <?php if (!empty($message)): ?>
+                <p style="margin-top:10px; color:#bb86fc;"><?= htmlspecialchars($message) ?></p>
+            <?php endif; ?>
         </div>
 
-        <div class="activity-history">
-            <div class="activity-history-header">
-                <h2>Activity History</h2>
-                <a href="#">View All &gt;&gt;</a>
-            </div>
-            <div class="activity-icons">
-                <div class="activity-icon-item">
-                    <i class="fa-solid fa-sack-dollar"></i>
-                    <p>To Be Paid</p>
-                </div>
-                <div class="activity-icon-item">
-                    <i class="fa-solid fa-box-open"></i>
-                    <p>To Be Delivered</p>
-                </div>
-                <div class="activity-icon-item">
-                    <i class="fa-solid fa-truck-fast"></i>
-                    <p>Delivered</p>
-                </div>
-                <div class="activity-icon-item">
-                    <i class="fa-solid fa-check-circle"></i>
-                    <p>Completed</p>
-                </div>
-            </div>
+        <!-- Account Section (unchanged) -->
+        <div class="about-us-section">
+            <h2>Account</h2>
+            <a href="change_password.php">
+                <p>Change Password</p>
+                <span class="arrow">&gt;</span>
+            </a>
         </div>
-
-        <div class="support-section">
-            <h2>Support</h2>
-            <div class="support-item">
-                <i class="fa-solid fa-exclamation-circle"></i>
-                <p>Order Issues</p>
-                <span class="arrow">&gt;</span>
-            </div>
-            <div class="support-item">
-                <i class="fa-solid fa-headset"></i>
-                <p>Help Center</p>
-                <span class="arrow">&gt;</span>
-            </div>
-            <div class="support-item">
-                <i class="fa-solid fa-list-ul"></i>
-                <p>Complain List</p>
-                <span class="arrow">&gt;</span>
-            </div>
-        </div>
-
-    <div class="about-us-section">
-    <h2>Account</h2>
-    <a href="/MASTER PROJECT - MAGNUM CAFE SYSTEM/Magnum_Cafe_Ordering_System_Group1/change_password.php">
-        <p>Change Password</p>
-        <span class="arrow">&gt;</span>
-    </a>
-</div>
     </div>
 </div>
 
