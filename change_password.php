@@ -35,7 +35,12 @@ if (isset($_POST["change_password"])) {
         $message = "❌ Old password is incorrect.";
     } elseif ($newPass !== $confirmPass) {
         $message = "❌ New passwords do not match.";
-    } else {
+    } 
+    // ✅ Check password strength
+    elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/', $newPass)) {
+        $message = "❌ Invalid password. It must be at least 6 characters long and include an uppercase letter, lowercase letter, and number.";
+    } 
+    else {
         $hashedNew = password_hash($newPass, PASSWORD_DEFAULT);
         $updateSql = "UPDATE users SET password = ? WHERE username = ?";
         $updateStmt = mysqli_prepare($conn, $updateSql);
@@ -47,6 +52,7 @@ if (isset($_POST["change_password"])) {
         }
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
