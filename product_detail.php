@@ -1,16 +1,24 @@
 <?php
+// Connect to database
 $conn = new mysqli("localhost", "root", "", "ecommerce_db");
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$product = null;
-
-if (isset($_GET['id'])) {
-    $id = intval($_GET['id']);
-    $result = $conn->query("SELECT * FROM products WHERE id=$id");
-    $product = $result->fetch_assoc();
+if (!isset($_GET['id'])) {
+    die("Product not found.");
 }
+
+$id = intval($_GET['id']);
+$sql = "SELECT * FROM products WHERE id = $id";
+$result = $conn->query($sql);
+
+if ($result->num_rows == 0) {
+    die("Product not found.");
+}
+
+$product = $result->fetch_assoc();
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html>
@@ -117,11 +125,11 @@ if (isset($_GET['id'])) {
         <p><strong>Price:</strong> $<?php echo htmlspecialchars($product['price']); ?></p>
         <p><?php echo htmlspecialchars($product['description']); ?></p>
 
-        <?php if ($product['stock'] > 0): ?>
+        <?php if ((int)$product['stock'] > 0): ?>
         <div class="add-to-cart">
             <div class="quantity-selector">
                 <button type="button" onclick="changeQty(-1)">−</button>
-                <input type="number" id="quantity" value="1" min="1" max="<?php echo $product['stock']; ?>" readonly>
+                <input type="number" id="quantity" value="1" min="1" max="<?php echo (int)$product['stock']; ?>" readonly>
                 <button type="button" onclick="changeQty(1)">+</button>
             </div>
 
@@ -136,38 +144,61 @@ if (isset($_GET['id'])) {
 
     <script>
         function changeQty(val) {
-            let qtyInput = document.getElementById("quantity");
-            let current = parseInt(qtyInput.value);
-            let min = parseInt(qtyInput.min);
-            let max = parseInt(qtyInput.max);
+            const qtyInput = document.getElementById("quantity");
+            let current = parseInt(qtyInput.value, 10) || 1;
+            const min = parseInt(qtyInput.min, 10) || 1;
+            const max = parseInt(qtyInput.max, 10) || 1;
 
             let newVal = current + val;
-            if (newVal >= min && newVal <= max) {
-                qtyInput.value = newVal;
-            }
+            if (newVal < min) newVal = min;
+            if (newVal > max) newVal = max;
+            qtyInput.value = newVal;
         }
 
         function addToCart() {
-            let qty = parseInt(document.getElementById("quantity").value);
-            let product = {
-                id: <?php echo $product['id']; ?>,
-                name: "<?php echo addslashes($product['name']); ?>",
-                price: <?php echo $product['price']; ?>,
-                image: "<?php echo $product['image']; ?>",
+            // read qty and stock as integers
+            const qty = parseInt(document.getElementById("quantity").value, 10) || 1;
+            const maxStock = parseInt(<?php echo json_encode((int)$product['stock']); ?>, 10);
+
+            // build product object with numeric qty
+            const productToAdd = {
+                id: parseInt(<?php echo json_encode((int)$product['id']); ?>, 10),
+                name: <?php echo json_encode($product['name']); ?>,
+                price: parseFloat(<?php echo json_encode((float)$product['price']); ?>),
+                image: <?php echo json_encode($product['image']); ?>,
                 qty: qty
             };
 
+            // load cart and normalize types
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            let existing = cart.find(item => item.id === product.id);
+            cart = cart.map(it => {
+                it.qty = parseInt(it.qty, 10) || 0;
+                it.id = parseInt(it.id, 10) || it.id;
+                return it;
+            });
 
-            if (existing) {
-                existing.qty += qty;
+            // find existing by numeric id
+            const idx = cart.findIndex(it => it.id === productToAdd.id);
+
+            if (idx > -1) {
+                const existingQty = cart[idx].qty;
+                // allow equal to stock, block only if exceeds
+                if ((existingQty + productToAdd.qty) > maxStock) {
+                    alert("⚠️ Sorry, only " + maxStock + " stock available for " + productToAdd.name);
+                    return;
+                }
+                cart[idx].qty = existingQty + productToAdd.qty;
             } else {
-                cart.push(product);
+                if (productToAdd.qty > maxStock) {
+                    alert("⚠️ Sorry, only " + maxStock + " stock available for " + productToAdd.name);
+                    return;
+                }
+                cart.push(productToAdd);
             }
 
+            // save normalized cart
             localStorage.setItem('cart', JSON.stringify(cart));
-            alert(product.name + " added to cart!");
+            alert(productToAdd.name + " added to cart!");
         }
     </script>
 </body>
