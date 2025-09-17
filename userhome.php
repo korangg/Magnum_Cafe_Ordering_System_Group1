@@ -305,7 +305,7 @@ mysqli_close($conn);
 
   <div class="sidebar" id="user-sidebar">
       <div class="sidebar-header">
-          <img src="assets/img/testimonials/testimonials-2.jpg" alt="Profile Picture"> <h3><?php echo $username; ?></h3>
+        
       </div>
       <ul class="sidebar-nav">
           <li><a href="profile.php"><i class="bi bi-person-circle"></i> Profile</a></li>
