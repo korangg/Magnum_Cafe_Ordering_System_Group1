@@ -118,17 +118,15 @@ if (isset($_GET['id'])) {
         <p><?php echo htmlspecialchars($product['description']); ?></p>
 
         <?php if ($product['stock'] > 0): ?>
-        <form method="post" action="cart.php" class="add-to-cart">
-            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-            
+        <div class="add-to-cart">
             <div class="quantity-selector">
                 <button type="button" onclick="changeQty(-1)">−</button>
-                <input type="number" id="quantity" name="quantity" value="1" min="1" max="<?php echo $product['stock']; ?>" readonly>
+                <input type="number" id="quantity" value="1" min="1" max="<?php echo $product['stock']; ?>" readonly>
                 <button type="button" onclick="changeQty(1)">+</button>
             </div>
 
-            <button type="submit" class="cart-btn">🛒 Add to Cart</button>
-        </form>
+            <button type="button" class="cart-btn" onclick="addToCart()">🛒 Add to Cart</button>
+        </div>
         <?php else: ?>
         <p class="out-of-stock">❌ Food out of order</p>
         <?php endif; ?>
@@ -147,6 +145,29 @@ if (isset($_GET['id'])) {
             if (newVal >= min && newVal <= max) {
                 qtyInput.value = newVal;
             }
+        }
+
+        function addToCart() {
+            let qty = parseInt(document.getElementById("quantity").value);
+            let product = {
+                id: <?php echo $product['id']; ?>,
+                name: "<?php echo addslashes($product['name']); ?>",
+                price: <?php echo $product['price']; ?>,
+                image: "<?php echo $product['image']; ?>",
+                qty: qty
+            };
+
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            let existing = cart.find(item => item.id === product.id);
+
+            if (existing) {
+                existing.qty += qty;
+            } else {
+                cart.push(product);
+            }
+
+            localStorage.setItem('cart', JSON.stringify(cart));
+            alert(product.name + " added to cart!");
         }
     </script>
 </body>
