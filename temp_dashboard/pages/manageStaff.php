@@ -394,6 +394,22 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
 			</div>
 		  </div>
 		</div>
+		
+<?php
+// ✅ Delete Staff Logic
+if (isset($_GET["delete_staff"])) {
+    $staffId = intval($_GET["delete_staff"]); // prevent SQL injection
+
+    $delete = mysqli_query($conn, "DELETE FROM users WHERE id = $staffId AND usertype = 'staff'");
+
+    if ($delete) {
+        echo "<script>alert('✅ Staff deleted successfully!'); window.location='manageStaff.php';</script>";
+    } else {
+        echo "<script>alert('❌ Failed to delete staff.');</script>";
+    }
+}
+?>
+
 
 		
 		
