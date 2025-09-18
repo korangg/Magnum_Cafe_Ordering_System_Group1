@@ -326,6 +326,8 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
 			<div class="col-12">
 				<div class="card mb-4">
 					<div class="card-header pb-0">
+						<h6>View Customer</h6>
+					</div>
 						<div class="card-body px-0 pt-0 pb-2">
 							<div class="table-responsive p-0">
 								<table class="table align-items-center mb-0">
@@ -334,6 +336,7 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
 											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
 											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Username</th>
 											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
+											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone Number</th>
 											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Verified</th>
 											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
 										</tr>
@@ -344,6 +347,7 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
 											<td><p class="text-xs font-weight-bold mb-0"><?= $u["id"] ?></p></td>
 											<td><h6 class="mb-0 text-sm"><?= htmlspecialchars($u["username"]) ?></h6></td>
 											<td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($u["email"]) ?></p></td>
+											<td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($u["phone"]) ?></p></td>
 											<td><p class="text-xs mb-0"><?= $u["verified"] ? "✅" : "❌" ?></p></td>
 											<td class="align-middle text-center">
 												<a href="?delete_user=<?= $u["id"] ?>" 
@@ -356,10 +360,101 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
 								</table>
 							</div>
 						</div>
-					</div>
+					
 				</div>
 			</div>
 		</div>
+		
+<?php
+// ✅ Fetch user list for dropdown
+$allUsers = mysqli_query($conn, "SELECT id, username FROM users WHERE usertype='user'");
+
+// ✅ Reset variables
+$editUserData = null;
+$updateUserMessage = "";
+
+// ✅ Update user credentials
+if (isset($_POST["update_user"])) {
+    $id = intval($_POST["id"]);
+    $username = trim($_POST["username"]);
+    $phone = trim($_POST["phone"]);
+
+    $updateQuery = mysqli_query($conn, 
+        "UPDATE users SET username='$username', phone='$phone' WHERE id=$id AND usertype='user'"
+    );
+
+    if ($updateQuery) {
+        $updateUserMessage = "<p class='font-weight-bolder text-success'>✅ User updated successfully!</p>";
+        // ✅ Clear form after update
+        $editUserData = null;
+        unset($_GET["user_id"]);
+    } else {
+        $updateUserMessage = "<p class='font-weight-bolder text-danger'>❌ Failed to update user.</p>";
+    }
+}
+
+// ✅ Fetch selected user details (only if not just updated)
+if (isset($_GET["user_id"]) && empty($_POST["update_user"])) {
+    $userId = intval($_GET["user_id"]);
+    $userQuery = mysqli_query($conn, "SELECT * FROM users WHERE id = $userId AND usertype='user'");
+    $editUserData = mysqli_fetch_assoc($userQuery);
+}
+?>
+
+<!-- Edit User -->
+<div class="row">
+  <div class="col-12">
+    <div class="card mb-4">
+      <div class="card-header pb-0">
+        <h6>Edit User</h6>
+        <?= $updateUserMessage ?>
+      </div>
+      <div class="card-body px-0 pt-0 pb-2">
+        <div class="table-responsive p-0">
+          <!-- Step 1: Select User by ID -->
+          <form method="GET" class="p-3">
+            <div class="row">
+              <div class="col-md-4 mb-2">
+                <select name="user_id" class="form-control" onchange="this.form.submit()" required>
+                  <option value="">Select User ID</option>
+                  <?php 
+                  // ✅ Reset dropdown after update
+                  mysqli_data_seek($allUsers, 0); 
+                  while ($u = mysqli_fetch_assoc($allUsers)): ?>
+                    <option value="<?= $u['id'] ?>" <?= (isset($_GET['user_id']) && $_GET['user_id'] == $u['id'] && !$updateUserMessage) ? 'selected' : '' ?>>
+                      <?= $u['id'] ?> - <?= htmlspecialchars($u['username']) ?>
+                    </option>
+                  <?php endwhile; ?>
+                </select>
+              </div>
+            </div>
+          </form>
+
+          <!-- Step 2: Show autofilled form if user selected -->
+          <?php if ($editUserData): ?>
+          <form method="POST" class="p-3">
+            <input type="hidden" name="id" value="<?= $editUserData['id'] ?>">
+            <div class="row">
+              <div class="col-md-6 mb-2">
+                <input type="text" name="username" class="form-control" value="<?= htmlspecialchars($editUserData['username']) ?>" required>
+              </div>
+              <div class="col-md-6 mb-2">
+                <input type="text" name="phone" class="form-control" value="<?= htmlspecialchars($editUserData['phone']) ?>" required>
+              </div>
+              <div class="col-md-12 mb-2">
+                <button type="submit" name="update_user" class="btn btn-success w-100">Update User</button>
+              </div>
+            </div>
+          </form>
+          <?php endif; ?>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+		
+		
     </div>
   </main>
   <!--   Core JS Files   -->
