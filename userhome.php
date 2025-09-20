@@ -55,112 +55,77 @@ mysqli_close($conn);
 
   <link href="assets/css/main.css" rel="stylesheet">
     
-	<style>
-		.background-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 0;
-        }
-        .animated-image-right {
-            z-index: 1;
-            width: 100px;
-            position: absolute;
-            top: 450px;
-            right: 200px;
-            animation: moveR 15s infinite;
-        }
-        .animated-image-left {
-            z-index: 3;
-            width: 100px;
-            position: absolute;
-            top: 450px;
-            left: 200px;
-            animation: moveL 15s infinite;
-        }
-        @keyframes moveR {
-            0%, 100% { transform: translateX(0) scale(0.9); }
-            50% { transform: translateX(20px) scale(1.0); }
-        }
-        @keyframes moveL {
-            0%, 100% { transform: translateX(0) scale(0.9); }
-            50% { transform: translateX(-20px) scale(1.0); }
-        }
-        .text-overlay-left {
-            z-index: 2;
-            position: absolute;
-            top: 290px;
-            left: 200px;
-            color: white;
-            font-size: 90px;
-            font-weight: bold;
-            font-family: 'Open Sans', sans-serif;
-        }
-        .text-overlay-right {
-            z-index: 4;
-            position: absolute;
-            top: 290px;
-            right: 200px;
-            color: white;
-            font-size: 90px;
-            font-weight: bold;
-            font-family: 'Open Sans', sans-serif;
-            text-align: right;
-        }
-
-
-
-       /* --- SIDEBAR TOGGLE BUTTON --- */
-.sidebar-toggle {
-    font-size: 39px;   /* size of icon */
-    color: white;
-    cursor: pointer;
-    position: absolute;
-    left: 1550px;   /* distance from left */
-    top: 1px;    /* distance from top */
-    transform: none;   /* remove centering */
-    z-index: 1001;     /* stays above everything */
-}
-
-/* --- SIDEBAR --- */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 280px;
-    background-color: #1a1a2e;
-    z-index: 9999;
-    transform: translateX(-100%); /* hidden */
-    transition: transform 0.3s ease-in-out;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    color: white;
-}
-.sidebar.active {
-    transform: translateX(0); /* slide in */
-}
-
-/* --- HEADER INSIDE SIDEBAR --- */
 <style>
-    /* --- SIDEBAR TOGGLE BUTTON --- */
-    .sidebar-toggle {
-        font-size: 28px;
-        color: var(--nav-color);
-        cursor: pointer;
+    .background-video {
         position: absolute;
-        right: 15px;
-        top: 15px;
-        z-index: 1001;
-        transition: color 0.3s;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
     }
 
-    .sidebar-toggle:hover {
-        color: var(--nav-hover-color);
+    .animated-image-right {
+        z-index: 1;
+        width: 100px;
+        position: absolute;
+        top: 450px;
+        right: 200px;
+        animation: moveR 15s infinite;
+    }
+
+    .animated-image-left {
+        z-index: 3;
+        width: 100px;
+        position: absolute;
+        top: 450px;
+        left: 200px;
+        animation: moveL 15s infinite;
+    }
+
+    @keyframes moveR {
+        0%, 100% { transform: translateX(0) scale(0.9); }
+        50% { transform: translateX(20px) scale(1.0); }
+    }
+
+    @keyframes moveL {
+        0%, 100% { transform: translateX(0) scale(0.9); }
+        50% { transform: translateX(-20px) scale(1.0); }
+    }
+
+    .text-overlay-left {
+        z-index: 2;
+        position: absolute;
+        top: 290px;
+        left: 200px;
+        color: white;
+        font-size: 90px;
+        font-weight: bold;
+        font-family: 'Open Sans', sans-serif;
+    }
+
+    .text-overlay-right {
+        z-index: 4;
+        position: absolute;
+        top: 290px;
+        right: 200px;
+        color: white;
+        font-size: 90px;
+        font-weight: bold;
+        font-family: 'Open Sans', sans-serif;
+        text-align: right;
+    }
+
+    /* --- SIDEBAR TOGGLE BUTTON --- */
+    .sidebar-toggle {
+        position: sticky;
+        top: 20px;
+        right: 20px;
+        font-size: 40px;
+        color: white;
+        z-index: 9999;
+        cursor: pointer;
     }
 
     /* --- SIDEBAR --- */
@@ -170,20 +135,18 @@ mysqli_close($conn);
         left: 0;
         height: 100%;
         width: 280px;
-        background-color: var(--nav-mobile-background-color);
+        background-color: #1a1a2e;
         z-index: 9999;
-        transform: translateX(-100%);
+        transform: translateX(-100%); /* hidden */
         transition: transform 0.3s ease-in-out;
         padding: 20px;
         display: flex;
         flex-direction: column;
-        color: var(--nav-dropdown-color);
-        font-family: var(--nav-font);
-        box-shadow: 2px 0 15px rgba(0, 0, 0, 0.1);
+        color: white;
     }
 
     .sidebar.active {
-        transform: translateX(0);
+        transform: translateX(0); /* slide in */
     }
 
     /* --- HEADER INSIDE SIDEBAR --- */
@@ -288,7 +251,7 @@ mysqli_close($conn);
         .sidebar {
             width: 250px;
         }
-        
+
         .sidebar-toggle {
             font-size: 24px;
             right: 10px;
@@ -297,8 +260,6 @@ mysqli_close($conn);
     }
 </style>
 
-
-	</style>
 </head>
 
 <body class="index-page">
@@ -325,11 +286,11 @@ mysqli_close($conn);
           <i class="bi bi-phone d-flex align-items-center ms-4"><span>+60 12-345 6789</span></i>
         </div>
       </div>
-    </div><div class="branding d-flex align-items-cente">
+    </div><div class="branding d-flex align-items-center">
 
       <div class="container position-relative d-flex align-items-center justify-content-between">
         
-        <i class="bi bi-person-circle sidebar-toggle" id="sidebar-toggle-btn"></i>
+        
 
         <a href="userhome.php" class="logo d-flex align-items-center me-auto me-xl-0">
           <h1 class="sitename">Magnum Cafe</h1>
@@ -341,11 +302,13 @@ mysqli_close($conn);
             <li><a href="#menu">Menu</a></li>
             <li><a href="#specials">Specials</a></li>
             <li><a href="#about">About Us</a></li>
-            <li><a href="#contact">Contact</a></li>
-			 <a href="cart.php">Cart</a>
+            <li><a href="#contact">Contact Us</a></li>
+			<li><a href="cart.php">Cart</a></li>
             </ul>
           <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
         </nav>
+		
+		<i class="bi bi-person-circle sidebar-toggle" id="sidebar-toggle-btn"></i>
 
       </div>	
     </div>
@@ -530,8 +493,14 @@ mysqli_close($conn);
           <div class="col-lg-6 order-2 order-lg-1 content">
             <h3>Who We Are</h3>
             <p class="fst-italic">
-              We’re a local bookstore offering handpicked titles across all genres — from romance and mystery to business and personal growth.
-			  Our mission is to make reading exciting and affordable for everyone!
+              Welcome to Magnum Cafe, where every cup tells a story and every bite is an adventure! Nestled in the heart of our community, 
+			  we’re not just a cafe; we’re a vibrant gathering place for food lovers and coffee aficionados alike.<br><br>
+
+			  At Magnum Cafe, we pride ourselves on serving a curated menu of delectable dishes and artisanal beverages that celebrate local flavors and global inspirations.
+			  From our rich, aromatic coffees to our mouthwatering pastries and gourmet meals, every item is crafted with passion and care.<br><br>
+
+			  Join us in our journey to make every dining experience not just a meal, but a memorable occasion.
+			  Let’s spice up life together, one delicious bite at a time!
             </p>
 			<h3>Contact</h3>
             <ul>
@@ -557,22 +526,28 @@ mysqli_close($conn);
           <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
             <div class="card-item">
               <span>01</span>
-              <h4><a href="" class="stretched-link">Lorem Ipsum</a></h4>
-              <p>Ulamco laboris nisi ut aliquip ex ea commodo consequat. Et consectetur ducimus vero placeat</p>
+              <h4>Artisanal Flavors</h4>
+              <p>We craft our ice cream using high-quality, locally sourced ingredients, offering unique and indulgent flavors that change with the seasons</p>
             </div>
-          </div><div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+          </div><!-- Card Item -->
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
             <div class="card-item">
               <span>02</span>
-              <h4><a href="" class="stretched-link">Repellat Nihil</a></h4>
-              <p>Dolorem est fugiat occaecati voluptate velit esse. Dicta veritatis dolor quod et vel dire leno para dest</p>
+              <h4>Custom Creations</h4>
+              <p>At Magnum Cafe, you can personalize your dessert! Choose from a variety of toppings, sauces, and cones to create your perfect ice cream masterpiece</p>
             </div>
-          </div><div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
+          </div><!-- Card Item -->
+
+          <div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
             <div class="card-item">
               <span>03</span>
-              <h4><a href="" class="stretched-link">Ad ad velit qui</a></h4>
-              <p>Molestiae officiis omnis illo asperiores. Aut doloribus vitae sunt debitis quo vel nam quis</p>
+              <h4>Family-Friendly Atmosphere</h4>
+              <p>Our cafe is designed for everyone! With a fun and inviting space, it’s the perfect spot for families and friends to gather and enjoy sweet moments together</p>
             </div>
-          </div></div>
+          </div><!-- Card Item -->
+		  
+		</div>
 
       </div>
 
@@ -786,57 +761,57 @@ mysqli_close($conn);
 
       <div class="container section-title" data-aos="fade-up">
         <h2>Gallery</h2>
-        <p>Some photos from Our Restaurant</p>
+        <p>Some photos from Our Cafe</p>
       </div><div class="container-fluid" data-aos="fade-up" data-aos-delay="100">
 
         <div class="row g-0">
 
           <div class="col-lg-3 col-md-4">
             <div class="gallery-item">
-              <a href="assets/img/gallery/gallery-1.jpg" class="glightbox" data-gallery="images-gallery">
-                <img src="assets/img/gallery/gallery-1.jpg" alt="" class="img-fluid">
+              <a href="assets/img/gallery/gallery1.jpg" class="glightbox" data-gallery="images-gallery">
+                <img src="assets/img/gallery/gallery1.jpg" alt="" class="img-fluid">
               </a>
             </div>
           </div><div class="col-lg-3 col-md-4">
             <div class="gallery-item">
-              <a href="assets/img/gallery/gallery-2.jpg" class="glightbox" data-gallery="images-gallery">
-                <img src="assets/img/gallery/gallery-2.jpg" alt="" class="img-fluid">
+              <a href="assets/img/gallery/gallery2.jpg" class="glightbox" data-gallery="images-gallery">
+                <img src="assets/img/gallery/gallery2.jpg" alt="" class="img-fluid">
               </a>
             </div>
           </div><div class="col-lg-3 col-md-4">
             <div class="gallery-item">
-              <a href="assets/img/gallery/gallery-3.jpg" class="glightbox" data-gallery="images-gallery">
-                <img src="assets/img/gallery/gallery-3.jpg" alt="" class="img-fluid">
+              <a href="assets/img/gallery/gallery3.jpg" class="glightbox" data-gallery="images-gallery">
+                <img src="assets/img/gallery/gallery3.jpg" alt="" class="img-fluid">
               </a>
             </div>
           </div><div class="col-lg-3 col-md-4">
             <div class="gallery-item">
-              <a href="assets/img/gallery/gallery-4.jpg" class="glightbox" data-gallery="images-gallery">
-                <img src="assets/img/gallery/gallery-4.jpg" alt="" class="img-fluid">
+              <a href="assets/img/gallery/gallery4.jpg" class="glightbox" data-gallery="images-gallery">
+                <img src="assets/img/gallery/gallery4.jpg" alt="" class="img-fluid">
               </a>
             </div>
           </div><div class="col-lg-3 col-md-4">
             <div class="gallery-item">
-              <a href="assets/img/gallery/gallery-5.jpg" class="glightbox" data-gallery="images-gallery">
-                <img src="assets/img/gallery/gallery-5.jpg" alt="" class="img-fluid">
+              <a href="assets/img/gallery/gallery5.jpg" class="glightbox" data-gallery="images-gallery">
+                <img src="assets/img/gallery/gallery5.jpg" alt="" class="img-fluid">
               </a>
             </div>
           </div><div class="col-lg-3 col-md-4">
             <div class="gallery-item">
-              <a href="assets/img/gallery/gallery-6.jpg" class="glightbox" data-gallery="images-gallery">
-                <img src="assets/img/gallery/gallery-6.jpg" alt="" class="img-fluid">
+              <a href="assets/img/gallery/gallery6.jpg" class="glightbox" data-gallery="images-gallery">
+                <img src="assets/img/gallery/gallery6.jpg" alt="" class="img-fluid">
               </a>
             </div>
           </div><div class="col-lg-3 col-md-4">
             <div class="gallery-item">
-              <a href="assets/img/gallery/gallery-7.jpg" class="glightbox" data-gallery="images-gallery">
-                <img src="assets/img/gallery/gallery-7.jpg" alt="" class="img-fluid">
+              <a href="assets/img/gallery/gallery7.jpg" class="glightbox" data-gallery="images-gallery">
+                <img src="assets/img/gallery/gallery7.jpg" alt="" class="img-fluid">
               </a>
             </div>
           </div><div class="col-lg-3 col-md-4">
             <div class="gallery-item">
-              <a href="assets/img/gallery/gallery-8.jpg" class="glightbox" data-gallery="images-gallery">
-                <img src="assets/img/gallery/gallery-8.jpg" alt="" class="img-fluid">
+              <a href="assets/img/gallery/gallery8.jpg" class="glightbox" data-gallery="images-gallery">
+                <img src="assets/img/gallery/gallery8.jpg" alt="" class="img-fluid">
               </a>
             </div>
           </div></div>
@@ -846,7 +821,7 @@ mysqli_close($conn);
     </section><section id="chefs" class="chefs section">
 
       <div class="container section-title" data-aos="fade-up">
-        <h2>Team</h2>
+        <h2>Chef</h2>
         <p>Necessitatibus eius consequatur</p>
       </div><div class="container">
 
@@ -854,17 +829,17 @@ mysqli_close($conn);
 
           <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
             <div class="member">
-              <img src="assets/img/chefs/chefs-1.jpg" class="img-fluid" alt="">
+              <img src="assets/img/chefs/chef.jpg" class="img-fluid" alt="">
               <div class="member-info">
                 <div class="member-info-content">
-                  <h4>Walter White</h4>
-                  <span>Master Chef</span>
+                  <h4>Miko Aspiras</h4>
+                  <span>Head Pastry</span>
                 </div>
                 <div class="social">
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
+                  <a href="https://x.com/chefmikoaspiras"><i class="bi bi-twitter-x"></i></a>
+                  <a href="https://www.facebook.com/gelatobychefmiko/"><i class="bi bi-facebook"></i></a>
+                  <a href="https://www.instagram.com/chefmikoaspiras/"><i class="bi bi-instagram"></i></a>
+                  <a href="https://au.linkedin.com/in/michael-miko-aspiras-66673040?original_referer=https%3A%2F%2Fwww.google.com%2F"><i class="bi bi-linkedin"></i></a>
                 </div>
               </div>
             </div>
@@ -1005,12 +980,12 @@ mysqli_close($conn);
                       <p class="mt-3"><strong>Phone:</strong> <span>+60 12-345 6789</span></p>
                       <p><strong>Email:</strong> <span>support@myshop.com</span></p>
                   </div>
-                  <div class="social-links d-flex justify-content-center mt-4">
-                      <a href=""><i class="bi bi-twitter-x"></i></a>
-                      <a href=""><i class="bi bi-facebook"></i></a>
-                      <a href=""><i class="bi bi-instagram"></i></a>
-                      <a href=""><i class="bi bi-linkedin"></i></a>
-                  </div>
+                  <div class="social-links d-flex justify-content-center mt-4" style="font-size:22px;">
+					<a href="https://x.com/magnumicecream?lang=en"><i class="bi bi-twitter-x"></i></a>
+					<a href="https://www.facebook.com/MagnumMalaysia/"><i class="bi bi-facebook"></i></a>
+					<a href="https://www.instagram.com/magnumofficialmy/?hl=en"><i class="bi bi-instagram"></i></a>
+					<a href="https://www.linkedin.com/company/themiceco"><i class="bi bi-linkedin"></i></a>
+				  </div>
               </div>
           </div>
       </div>
