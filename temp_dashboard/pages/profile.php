@@ -160,7 +160,7 @@ if (isset($_POST['update_profile'])) {
 
                 <label style="font-size:14px; color:#b0b0b0;">Phone Number</label><br>
                 <input type="text" name="new_phone" value="<?= htmlspecialchars($userData['phone']) ?>"
-                       style="padding:8px; border-radius:8px; border:1px solid #333; width:100%; margin-bottom:10px;" required>
+                       style="padding:8px; border-radius:8px; border:1px solid #333; width:100%; margin-bottom:10px;">
 
                 <label style="font-size:14px; color:#b0b0b0;">Profile Picture</label><br>
                 <input type="file" name="profile_pic" accept="image/*"
