@@ -129,7 +129,7 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link  " href="../pages/rtl.html">
+          <a class="nav-link  " href="../pages/manageOrder - S.php">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>settings</title>
@@ -146,7 +146,7 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
                 </g>
               </svg>
             </div>
-            <span class="nav-link-text ms-1">RTL</span>
+            <span class="nav-link-text ms-1">Manage Order</span>
           </a>
         </li>
         <li class="nav-item mt-3">
@@ -335,69 +335,19 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
     <div class="container-fluid py-4">
 		
 <!-- Manage Product -->
-<div class="row">
-  <div class="col-12">
-    <div class="card mb-4">
-      <div class="card-header pb-0">
-        <h6>Manage Product</h6>
-      </div>
-      <div class="card-body px-0 pt-0 pb-2">
-        <div class="table-responsive p-0">
-          <table class="table align-items-center mb-0">
-            <thead>
-              <tr>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Description</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Price</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Category</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Stock</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php while ($p = mysqli_fetch_assoc($productList)): ?>
-              <tr>
-                <td><p class="text-xs font-weight-bold mb-0"><?= $p["id"] ?></p></td>
-                <td><h6 class="mb-0 text-sm"><?= htmlspecialchars($p["name"]) ?></h6></td>
-                <td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($p["description"]) ?></p></td>
-                <td><p class="text-xs text-secondary mb-0"><?= number_format($p["price"], 2) ?></p></td>
-                <td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($p["category"]) ?></p></td>
-                <td><p class="text-xs text-secondary mb-0"><?= $p["stock"] ?></p></td>
-                <td>
-                  <a href="?delete_product=<?= $p["id"] ?>" 
-                     class="text-danger font-weight-bold text-xs" 
-                     onclick="return confirm('Delete this product?')">Delete</a>
-                </td>
-              </tr>
-              <?php endwhile; ?>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <?php
-// ✅ Delete Product Logic
-if (isset($_GET["delete_product"])) {
-    $productId = intval($_GET["delete_product"]); // prevent SQL injection
+// ✅ Fetch all products for table
+$productList = mysqli_query($conn, "SELECT * FROM products ORDER BY id DESC");
 
-    $delete = mysqli_query($conn, "DELETE FROM products WHERE id = $productId");
+// ✅ Fetch products for dropdown
+$allProducts = mysqli_query($conn, "SELECT id, name FROM products ORDER BY id DESC");
 
-    if ($delete) {
-        echo "<script>alert('✅ Product deleted successfully!'); window.location='manageProduct.php';</script>";
-    } else {
-        echo "<script>alert('❌ Failed to delete product.');</script>";
-    }
-}
-?>
-
-<?php
-// ✅ Add Product Logic
+// ✅ Reset vars
+$editData = null;
+$updateMessage = "";
 $productMessage = "";
 
+// ✅ Add Product
 if (isset($_POST["add_product"])) {
     $name = trim($_POST["name"]);
     $description = trim($_POST["description"]);
@@ -413,65 +363,11 @@ if (isset($_POST["add_product"])) {
              VALUES ('$name', '$description', '$price', '$category', '$stock')"
         );
 
-        if ($insertProduct) {
-            $productMessage = "<p class='font-weight-bolder text-success'>✅ Product added successfully!</p>";
-        } else {
-            $productMessage = "<p class='font-weight-bolder text-danger'>❌ Failed to add product.</p>";
-        }
+        $productMessage = $insertProduct
+            ? "<p class='font-weight-bolder text-success'>✅ Product added successfully!</p>"
+            : "<p class='font-weight-bolder text-danger'>❌ Failed to add product.</p>";
     }
 }
-?>
-
-<!-- Add Product -->
-<div class="row">
-  <div class="col-12">
-    <div class="card mb-4">
-      <div class="card-header pb-0">
-        <h6>Add Product</h6>
-        <?php if (!empty($productMessage)) echo $productMessage; ?>
-      </div>
-      <div class="card-body px-0 pt-0 pb-2">
-        <div class="table-responsive p-0">
-          <form method="POST" class="p-3">
-            <div class="row">
-              <div class="col-md-2 mb-2">
-                <input type="text" name="name" class="form-control" placeholder="Product Name" required>
-              </div>
-              <div class="col-md-3 mb-2">
-                <input type="text" name="description" class="form-control" placeholder="Description">
-              </div>
-              <div class="col-md-2 mb-2">
-                <input type="number" step="0.01" name="price" class="form-control" placeholder="Price" required>
-              </div>
-              <div class="col-md-3 mb-2">
-				<select name="category" class="form-control" required>
-					<option value="">Select Category</option>
-					<option value="Starters">Starters</option>
-					<option value="Salads">Salads</option>
-					<option value="Speciality">Speciality</option>
-				</select>
-			</div>
-              <div class="col-md-2 mb-2">
-                <input type="number" name="stock" class="form-control" placeholder="Stock" required>
-              </div>
-              <div class="col-12 d-flex justify-content-center mb-2">
-				<button type="submit" name="add_product" class="btn btn-primary">Add</button>
-			  </div>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<?php
-// ✅ Fetch product list for dropdown
-$allProducts = mysqli_query($conn, "SELECT id, name FROM products");
-
-// ✅ Reset variables
-$editData = null;
-$updateMessage = "";
 
 // ✅ Update Product
 if (isset($_POST["update_product"])) {
@@ -497,13 +393,106 @@ if (isset($_POST["update_product"])) {
     }
 }
 
-// ✅ Fetch selected product details
+// ✅ Fetch selected product (from dropdown or edit button)
 if (isset($_GET["product_id"]) && empty($_POST["update_product"])) {
     $productId = intval($_GET["product_id"]);
     $productQuery = mysqli_query($conn, "SELECT * FROM products WHERE id = $productId");
     $editData = mysqli_fetch_assoc($productQuery);
 }
+
+// ✅ Delete Product
+if (isset($_GET["delete_product"])) {
+    $productId = intval($_GET["delete_product"]);
+    $delete = mysqli_query($conn, "DELETE FROM products WHERE id = $productId");
+
+    if ($delete) {
+        echo "<script>alert('✅ Product deleted successfully!'); window.location='manageProduct - S.php';</script>";
+    } else {
+        echo "<script>alert('❌ Failed to delete product.');</script>";
+    }
+}
 ?>
+
+<!-- Manage Product -->
+<div class="row">
+  <div class="col-12">
+    <div class="card mb-4">
+      <div class="card-header pb-0">
+        <h6>Manage Product</h6>
+      </div>
+      <div class="card-body px-0 pt-0 pb-2">
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">ID</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Description</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Price</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Category</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Stock</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php while ($p = mysqli_fetch_assoc($productList)): ?>
+              <tr>
+                <td><p class="text-xs font-weight-bold mb-0"><?= $p["id"] ?></p></td>
+                <td><h6 class="mb-0 text-sm"><?= htmlspecialchars($p["name"]) ?></h6></td>
+                <td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($p["description"]) ?></p></td>
+                <td><p class="text-xs text-secondary mb-0"><?= number_format($p["price"], 2) ?></p></td>
+                <td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($p["category"]) ?></p></td>
+                <td><p class="text-xs text-secondary mb-0"><?= $p["stock"] ?></p></td>
+                <td class="text-center">
+                  <a href="?product_id=<?= $p["id"] ?>" class="text-info font-weight-bold text-xs">Edit</a> | 
+                  <a href="?delete_product=<?= $p["id"] ?>" 
+                     class="text-danger font-weight-bold text-xs" 
+                     onclick="return confirm('Delete this product?')">Delete</a>
+                </td>
+              </tr>
+              <?php endwhile; ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Product -->
+<div class="row">
+  <div class="col-12">
+    <div class="card mb-4">
+      <div class="card-header pb-0">
+        <h6>Add Product</h6>
+        <?= $productMessage ?>
+      </div>
+      <div class="card-body px-0 pt-0 pb-2">
+        <div class="table-responsive p-0">
+          <form method="POST" class="p-3">
+            <div class="row">
+              <div class="col-md-2 mb-2"><input type="text" name="name" class="form-control" placeholder="Product Name" required></div>
+              <div class="col-md-3 mb-2"><input type="text" name="description" class="form-control" placeholder="Description"></div>
+              <div class="col-md-2 mb-2"><input type="number" step="0.01" name="price" class="form-control" placeholder="Price" required></div>
+              <div class="col-md-3 mb-2">
+                <select name="category" class="form-control" required>
+                  <option value="">Select Category</option>
+                  <option value="Starters">Starters</option>
+                  <option value="Salads">Salads</option>
+                  <option value="Speciality">Speciality</option>
+                </select>
+              </div>
+              <div class="col-md-2 mb-2"><input type="number" name="stock" class="form-control" placeholder="Stock" required></div>
+              <div class="col-12 d-flex justify-content-center mb-2">
+                <button type="submit" name="add_product" class="btn btn-primary">Add</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Edit Product -->
 <div class="row">
@@ -515,7 +504,7 @@ if (isset($_GET["product_id"]) && empty($_POST["update_product"])) {
       </div>
       <div class="card-body px-0 pt-0 pb-2">
         <div class="table-responsive p-0">
-          <!-- Step 1: Select Product by ID -->
+          <!-- Step 1: Dropdown (optional if not clicked from Action) -->
           <form method="GET" class="p-3">
             <div class="row">
               <div class="col-md-4 mb-2">
@@ -533,31 +522,29 @@ if (isset($_GET["product_id"]) && empty($_POST["update_product"])) {
             </div>
           </form>
 
-          <!-- Step 2: Show autofilled form if product selected -->
+          <!-- Step 2: Auto-filled edit form -->
           <?php if ($editData): ?>
           <form method="POST" class="p-3">
             <input type="hidden" name="id" value="<?= $editData['id'] ?>">
             <div class="row">
-              <div class="col-md-2 mb-2">
-                <input type="text" name="name" class="form-control" value="<?= htmlspecialchars($editData['name']) ?>" required>
-              </div>
+              <div class="col-md-2 mb-2"><input type="text" name="name" class="form-control" value="<?= htmlspecialchars($editData['name']) ?>" required></div>
+              <div class="col-md-3 mb-2"><input type="text" name="description" class="form-control" value="<?= htmlspecialchars($editData['description']) ?>"></div>
+              <div class="col-md-2 mb-2"><input type="number" step="0.01" name="price" class="form-control" value="<?= $editData['price'] ?>" required></div>
               <div class="col-md-3 mb-2">
-                <input type="text" name="description" class="form-control" value="<?= htmlspecialchars($editData['description']) ?>">
-              </div>
-              <div class="col-md-2 mb-2">
-                <input type="number" step="0.01" name="price" class="form-control" value="<?= $editData['price'] ?>" required>
-              </div>
-              <div class="col-md-3 mb-2">
-				<select name="category" class="form-control" required>
-				  <option value="Starters" <?= $editData['category'] == "Starters" ? "selected" : "" ?>>Starters</option>
-				  <option value="Salads" <?= $editData['category'] == "Salads" ? "selected" : "" ?>>Salads</option>
-				  <option value="Speciality" <?= $editData['category'] == "Speciality" ? "selected" : "" ?>>Speciality</option>
-				</select>
+			    <select name="category" class="form-control" required>
+				  <option value="Starters" <?= ($editData['category'] == "Starters") ? "selected" : "" ?>>Starters</option>
+				  <option value="Salads" <?= ($editData['category'] == "Salads") ? "selected" : "" ?>>Salads</option>
+				  <option value="Speciality" <?= ($editData['category'] == "Speciality") ? "selected" : "" ?>>Speciality</option>
+				  <!-- ✅ Extra option in case category is not in predefined list -->
+				  <?php if (!in_array($editData['category'], ["Starters","Salads","Speciality"])): ?>
+				    <option value="<?= htmlspecialchars($editData['category']) ?>" selected>
+					  <?= htmlspecialchars($editData['category']) ?>
+				    </option>
+				  <?php endif; ?>
+			    </select>
 			  </div>
 
-              <div class="col-md-2 mb-2">
-                <input type="number" name="stock" class="form-control" value="<?= $editData['stock'] ?>" required>
-              </div>
+              <div class="col-md-2 mb-2"><input type="number" name="stock" class="form-control" value="<?= $editData['stock'] ?>" required></div>
               <div class="col-md-12 mb-2">
                 <button type="submit" name="update_product" class="btn btn-success w-100">Update Product</button>
               </div>
