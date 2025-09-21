@@ -14,11 +14,11 @@ $dashboardLink = ($_SESSION["usertype"] === "admin") ? "../pages/adminDashboard.
 $conn = mysqli_connect("localhost", "root", "", "ecommerce_db");
 
 // ✅ Fetch Lists
-$products = mysqli_query($conn, "SELECT * FROM products");
+$productList = mysqli_query($conn, "SELECT * FROM products");
 $staffList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'staff'");
 $userList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'user'");
 $feedbackList = mysqli_query($conn, "SELECT * FROM feedback ORDER BY submitted_at DESC");
-$orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
+$orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
 
 ?>
 
@@ -155,7 +155,7 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link  " href="../pages/rtl.html">
+          <a class="nav-link  " href="../pages/manageOrder.php">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>settings</title>
@@ -172,7 +172,7 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
                 </g>
               </svg>
             </div>
-            <span class="nav-link-text ms-1">RTL</span>
+            <span class="nav-link-text ms-1">Manage Order</span>
           </a>
         </li>
         <li class="nav-item mt-3">
@@ -370,7 +370,7 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
 				<table class="table align-items-center mb-0">
 				  <thead>
 					<tr>
-					  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
+					  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">ID</th>
 					  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
 					  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
 					  <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Message</th>
