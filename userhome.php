@@ -488,7 +488,7 @@ mysqli_close($conn);
 
         <div class="row gy-4">
           <div class="col-lg-6 order-1 order-lg-2">
-            <img src="assets/img/about.jpg" class="img-fluid about-img" alt="">
+            <img src="assets/img/magnum cafe.jpg" class="img-fluid about-img" alt="">
           </div>
           <div class="col-lg-6 order-2 order-lg-1 content">
             <h3>Who We Are</h3>
