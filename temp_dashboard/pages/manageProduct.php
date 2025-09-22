@@ -9,8 +9,8 @@ $conn = mysqli_connect("localhost", "root", "", "ecommerce_db");
 
 // ✅ Fetch Lists
 $productList = mysqli_query($conn, "SELECT * FROM products");
-$staffList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'staff'");
-$userList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'user'");
+$staffList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'staff' ORDER BY id DESC");
+$userList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'user' ORDER BY id DESC");
 $feedbackList = mysqli_query($conn, "SELECT * FROM feedback ORDER BY submitted_at DESC");
 $orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
 
@@ -375,17 +375,55 @@ if (isset($_POST["add_product"])) {
     $category = trim($_POST["category"]);
     $stock = intval($_POST["stock"]);
 
-    if (empty($name) || $price <= 0 || empty($category) || $stock < 0) {
-        $productMessage = "<p class='font-weight-bolder text-danger'>❌ Please fill all required fields correctly.</p>";
-    } else {
-        $insertProduct = mysqli_query($conn, 
-            "INSERT INTO products (name, description, price, category, stock) 
-             VALUES ('$name', '$description', '$price', '$category', '$stock')"
-        );
+    // Handle image upload
+    $target_dir = "../../assets/img/menu/"; // Set the target directory for images
+    $image = basename($_FILES["image"]["name"]); // Get the original image name
+    $target_file = $target_dir . $image;
+    $uploadOk = 1;
+    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-        $productMessage = $insertProduct
-            ? "<p class='font-weight-bolder text-success'>✅ Product added successfully!</p>"
-            : "<p class='font-weight-bolder text-danger'>❌ Failed to add product.</p>";
+    // Check if image file is a actual image or fake image
+    $check = getimagesize($_FILES["image"]["tmp_name"]);
+    if ($check === false) {
+        $productMessage = "<p class='font-weight-bolder text-danger'>❌ File is not an image.</p>";
+        $uploadOk = 0;
+    }
+
+    // Check if file already exists
+    if (file_exists($target_file)) {
+        $productMessage = "<p class='font-weight-bolder text-danger'>❌ Sorry, file already exists.</p>";
+        $uploadOk = 0;
+    }
+
+    // Check file size (5MB limit)
+    if ($_FILES["image"]["size"] > 5000000) {
+        $productMessage = "<p class='font-weight-bolder text-danger'>❌ Sorry, your file is too large.</p>";
+        $uploadOk = 0;
+    }
+
+    // Allow certain file formats
+    if (!in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif'])) {
+        $productMessage = "<p class='font-weight-bolder text-danger'>❌ Sorry, only JPG, JPEG, PNG & GIF files are allowed.</p>";
+        $uploadOk = 0;
+    }
+
+    if (empty($name) || $price <= 0 || empty($category) || $stock < 0 || $uploadOk == 0) {
+        $productMessage .= "<p class='font-weight-bolder text-danger'>❌ Please fill all required fields correctly.</p>";
+    } else {
+        // Attempt to upload the file
+        if ($uploadOk == 1 && move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+            // Insert product into the database
+            $insertProduct = mysqli_query($conn, 
+                "INSERT INTO products (name, description, price, category, stock, image) 
+                 VALUES ('$name', '$description', '$price', '$category', '$stock', '$image')"
+            );
+
+            $productMessage = $insertProduct
+                ? "<p class='font-weight-bolder text-success'>✅ Product added successfully!</p>"
+                : "<p class='font-weight-bolder text-danger'>❌ Failed to add product.</p>";
+        } else {
+            $productMessage .= "<p class='font-weight-bolder text-danger'>❌ Sorry, there was an error uploading your file.</p>";
+        }
     }
 }
 
@@ -398,11 +436,57 @@ if (isset($_POST["update_product"])) {
     $category = trim($_POST["category"]);
     $stock = intval($_POST["stock"]);
 
-    $updateQuery = mysqli_query($conn, 
-        "UPDATE products 
-         SET name='$name', description='$description', price='$price', category='$category', stock='$stock' 
-         WHERE id=$id"
-    );
+    // Check if a new image is uploaded
+    if (!empty($_FILES["image"]["name"])) {
+        // Handle image upload
+        $target_dir = "../../assets/img/menu/"; // Set the target directory for images
+        $image = basename($_FILES["image"]["name"]);
+        $target_file = $target_dir . $image;
+        $uploadOk = 1;
+        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+
+        // Image validation logic as before...
+        $check = getimagesize($_FILES["image"]["tmp_name"]);
+        if ($check === false) {
+            $updateMessage = "<p class='font-weight-bolder text-danger'>❌ File is not an image.</p>";
+            $uploadOk = 0;
+        }
+
+        if (file_exists($target_file)) {
+            $updateMessage = "<p class='font-weight-bolder text-danger'>❌ Sorry, file already exists.</p>";
+            $uploadOk = 0;
+        }
+
+        if ($_FILES["image"]["size"] > 5000000) {
+            $updateMessage = "<p class='font-weight-bolder text-danger'>❌ Sorry, your file is too large.</p>";
+            $uploadOk = 0;
+        }
+
+        if (!in_array($imageFileType, ['jpg', 'jpeg', 'png', 'gif'])) {
+            $updateMessage = "<p class='font-weight-bolder text-danger'>❌ Sorry, only JPG, JPEG, PNG & GIF files are allowed.</p>";
+            $uploadOk = 0;
+        }
+
+        if ($uploadOk == 1) {
+            if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                // Update product in the database with new image
+                $updateQuery = mysqli_query($conn, 
+                    "UPDATE products 
+                     SET name='$name', description='$description', price='$price', category='$category', stock='$stock', image='$image' 
+                     WHERE id=$id"
+                );
+            } else {
+                $updateMessage = "<p class='font-weight-bolder text-danger'>❌ Sorry, there was an error uploading your file.</p>";
+            }
+        }
+    } else {
+        // If no new image is uploaded, just update other fields
+        $updateQuery = mysqli_query($conn, 
+            "UPDATE products 
+             SET name='$name', description='$description', price='$price', category='$category', stock='$stock' 
+             WHERE id=$id"
+        );
+    }
 
     if ($updateQuery) {
         $updateMessage = "<p class='font-weight-bolder text-success'>✅ Product updated successfully!</p>";
@@ -451,6 +535,7 @@ if (isset($_GET["delete_product"])) {
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Price</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Category</th>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Stock</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Image</th> <!-- New column for image -->
                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
               </tr>
             </thead>
@@ -463,6 +548,7 @@ if (isset($_GET["delete_product"])) {
                 <td><p class="text-xs text-secondary mb-0"><?= number_format($p["price"], 2) ?></p></td>
                 <td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($p["category"]) ?></p></td>
                 <td><p class="text-xs text-secondary mb-0"><?= $p["stock"] ?></p></td>
+                <td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($p["image"]) ?></p></td> <!-- Display image filename -->
                 <td class="text-center">
                   <a href="?product_id=<?= $p["id"] ?>" class="text-info font-weight-bold text-xs">Edit</a> | 
                   <a href="?delete_product=<?= $p["id"] ?>" 
@@ -489,11 +575,17 @@ if (isset($_GET["delete_product"])) {
       </div>
       <div class="card-body px-0 pt-0 pb-2">
         <div class="table-responsive p-0">
-          <form method="POST" class="p-3">
+          <form method="POST" enctype="multipart/form-data" class="p-3">
             <div class="row">
-              <div class="col-md-2 mb-2"><input type="text" name="name" class="form-control" placeholder="Product Name" required></div>
-              <div class="col-md-3 mb-2"><input type="text" name="description" class="form-control" placeholder="Description"></div>
-              <div class="col-md-2 mb-2"><input type="number" step="0.01" name="price" class="form-control" placeholder="Price" required></div>
+              <div class="col-md-2 mb-2">
+                <input type="text" name="name" class="form-control" placeholder="Product Name" required>
+              </div>
+              <div class="col-md-3 mb-2">
+                <input type="text" name="description" class="form-control" placeholder="Description">
+              </div>
+              <div class="col-md-2 mb-2">
+                <input type="number" step="0.01" name="price" class="form-control" placeholder="Price" required>
+              </div>
               <div class="col-md-3 mb-2">
                 <select name="category" class="form-control" required>
                   <option value="">Select Category</option>
@@ -502,7 +594,12 @@ if (isset($_GET["delete_product"])) {
                   <option value="Speciality">Speciality</option>
                 </select>
               </div>
-              <div class="col-md-2 mb-2"><input type="number" name="stock" class="form-control" placeholder="Stock" required></div>
+              <div class="col-md-2 mb-2">
+                <input type="number" name="stock" class="form-control" placeholder="Stock" required>
+              </div>
+              <div class="col-md-3 mb-2">
+                <input type="file" name="image" class="form-control" required>
+              </div>
               <div class="col-12 d-flex justify-content-center mb-2">
                 <button type="submit" name="add_product" class="btn btn-primary">Add</button>
               </div>
@@ -544,27 +641,31 @@ if (isset($_GET["delete_product"])) {
 
           <!-- Step 2: Auto-filled edit form -->
           <?php if ($editData): ?>
-          <form method="POST" class="p-3">
+          <form method="POST" enctype="multipart/form-data" class="p-3">
             <input type="hidden" name="id" value="<?= $editData['id'] ?>">
             <div class="row">
               <div class="col-md-2 mb-2"><input type="text" name="name" class="form-control" value="<?= htmlspecialchars($editData['name']) ?>" required></div>
               <div class="col-md-3 mb-2"><input type="text" name="description" class="form-control" value="<?= htmlspecialchars($editData['description']) ?>"></div>
               <div class="col-md-2 mb-2"><input type="number" step="0.01" name="price" class="form-control" value="<?= $editData['price'] ?>" required></div>
               <div class="col-md-3 mb-2">
-			    <select name="category" class="form-control" required>
-				  <option value="Starters" <?= ($editData['category'] == "Starters") ? "selected" : "" ?>>Starters</option>
-				  <option value="Salads" <?= ($editData['category'] == "Salads") ? "selected" : "" ?>>Salads</option>
-				  <option value="Speciality" <?= ($editData['category'] == "Speciality") ? "selected" : "" ?>>Speciality</option>
-				  <!-- ✅ Extra option in case category is not in predefined list -->
-				  <?php if (!in_array($editData['category'], ["Starters","Salads","Speciality"])): ?>
-				    <option value="<?= htmlspecialchars($editData['category']) ?>" selected>
-					  <?= htmlspecialchars($editData['category']) ?>
-				    </option>
-				  <?php endif; ?>
-			    </select>
-			  </div>
+                <select name="category" class="form-control" required>
+                  <option value="Starters" <?= ($editData['category'] == "Starters") ? "selected" : "" ?>>Starters</option>
+                  <option value="Salads" <?= ($editData['category'] == "Salads") ? "selected" : "" ?>>Salads</option>
+                  <option value="Speciality" <?= ($editData['category'] == "Speciality") ? "selected" : "" ?>>Speciality</option>
+                  <!-- ✅ Extra option in case category is not in predefined list -->
+                  <?php if (!in_array($editData['category'], ["Starters","Salads","Speciality"])): ?>
+                    <option value="<?= htmlspecialchars($editData['category']) ?>" selected>
+                      <?= htmlspecialchars($editData['category']) ?>
+                    </option>
+                  <?php endif; ?>
+                </select>
+              </div>
 
               <div class="col-md-2 mb-2"><input type="number" name="stock" class="form-control" value="<?= $editData['stock'] ?>" required></div>
+              <div class="col-md-3 mb-2">
+                <input type="file" name="image" class="form-control">
+                <small class="form-text text-muted">Leave blank to keep current image.</small>
+              </div>
               <div class="col-md-12 mb-2">
                 <button type="submit" name="update_product" class="btn btn-success w-100">Update Product</button>
               </div>
@@ -576,13 +677,6 @@ if (isset($_GET["delete_product"])) {
     </div>
   </div>
 </div>
-
-
-
-
-
-
-		
 	
     </div>
   </main>
