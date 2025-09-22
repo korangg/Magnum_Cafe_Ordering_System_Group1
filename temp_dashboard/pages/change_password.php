@@ -100,7 +100,22 @@ if (isset($_POST["change_password"])) {
       <input type="password" name="new_password" placeholder="New Password" required>
       <input type="password" name="confirm_password" placeholder="Confirm New Password" required>
       <button type="submit" name="change_password">Update Password</button>
-      <p><a href="login.php" style="color:white; text-decoration:none;">⬅ Back to Login</a></p>
+      <p>
+		<?php
+		if (isset($_SESSION['usertype'])) {
+			if ($_SESSION['usertype'] === 'admin') {
+				$backPage = 'adminDashboard.php';
+			} elseif ($_SESSION['usertype'] === 'staff') {
+				$backPage = 'staffDashboard.php';
+			} else {
+				$backPage = 'login.php';
+			}
+		} else {
+			$backPage = 'login.php';
+		}
+		?>
+		<a href="<?= $backPage ?>" style="color:white; text-decoration:none;">⬅ Back</a>
+	</p>
     </form>
   </div>
 
