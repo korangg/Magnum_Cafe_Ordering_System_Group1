@@ -15,8 +15,8 @@ if (isset($_GET["delete_user"])) {
 
 // ✅ Fetch Lists
 $productList = mysqli_query($conn, "SELECT * FROM products");
-$staffList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'staff'");
-$userList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'user'");
+$staffList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'staff' ORDER BY id DESC");
+$userList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'user' ORDER BY id DESC");
 $feedbackList = mysqli_query($conn, "SELECT * FROM feedback ORDER BY submitted_at DESC");
 $orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
 
@@ -352,7 +352,6 @@ $orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC"
                 <td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($u["phone"]) ?></p></td>
                 <td><p class="text-xs mb-0"><?= $u["verified"] ? "✅" : "❌" ?></p></td>
                 <td class="text-center">
-                  <!-- ✅ Clicking Edit loads edit form below -->
                   <a href="adminDashboard.php?user_id=<?= $u['id'] ?>" class="text-info font-weight-bold text-xs">Edit</a> | 
                   <a href="?delete_user=<?= $u["id"] ?>" 
                      class="text-danger font-weight-bold text-xs" 
@@ -370,7 +369,7 @@ $orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC"
 
 <?php
 // ✅ Fetch user list for dropdown
-$allUsers = mysqli_query($conn, "SELECT id, username FROM users WHERE usertype='user'");
+$allUsers = mysqli_query($conn, "SELECT id, username FROM users WHERE usertype='user' ORDER BY id DESC");
 
 // ✅ Reset variables
 $editUserData = null;
@@ -382,16 +381,32 @@ if (isset($_POST["update_user"])) {
     $username = trim($_POST["username"]);
     $phone = trim($_POST["phone"]);
 
-    $updateQuery = mysqli_query($conn, 
-        "UPDATE users SET username='$username', phone='$phone' WHERE id=$id AND usertype='user'"
-    );
+    // Fetch old user details first (to notify)
+    $oldUserQuery = mysqli_query($conn, "SELECT email, username, phone FROM users WHERE id=$id AND usertype='user'");
+    
+    if ($oldUserData = mysqli_fetch_assoc($oldUserQuery)) {
+        // Prepare the update query
+        $updateQuery = mysqli_query($conn, 
+            "UPDATE users SET username='$username', phone='$phone' WHERE id=$id AND usertype='user'"
+        );
 
-    if ($updateQuery) {
-        $updateUserMessage = "<p class='font-weight-bolder text-success'>✅ User updated successfully!</p>";
-        $editUserData = null;
-        unset($_GET["user_id"]); // clear GET after update
+        if ($updateQuery) {
+            // ✅ After update, set session variables for notification
+            $_SESSION["notify_email"] = $oldUserData['email'];
+            $_SESSION["notify_username"] = $username; // Use new username
+            $_SESSION["notify_phone"] = $phone; // Use new phone
+
+            // Call notifyUser.php
+            include "notifyUser.php";  
+
+            // Clear user data after notification
+            $editUserData = null;
+            unset($_GET["user_id"]); // clear GET after update
+        } else {
+            $_SESSION['notify_error'] = "❌ Failed to update user: " . mysqli_error($conn);
+        }
     } else {
-        $updateUserMessage = "<p class='font-weight-bolder text-danger'>❌ Failed to update user.</p>";
+        $_SESSION['notify_error'] = "❌ User not found.";
     }
 }
 
@@ -409,7 +424,14 @@ if (isset($_GET["user_id"])) {
     <div class="card mb-4">
       <div class="card-header pb-0">
         <h6>Edit User</h6>
-        <?= $updateUserMessage ?>
+        <?php if (isset($_SESSION['notify_success'])): ?>
+            <p style="color: green;"><?= $_SESSION['notify_success'] ?></p>
+            <?php unset($_SESSION['notify_success']); ?>
+        <?php endif; ?>
+        <?php if (isset($_SESSION['notify_error'])): ?>
+            <p style="color: red;"><?= $_SESSION['notify_error'] ?></p>
+            <?php unset($_SESSION['notify_error']); ?>
+        <?php endif; ?>
       </div>
       <div class="card-body px-0 pt-0 pb-2">
         <div class="table-responsive p-0">
@@ -453,9 +475,6 @@ if (isset($_GET["user_id"])) {
     </div>
   </div>
 </div>
-
-
-		
 		
     </div>
   </main>
