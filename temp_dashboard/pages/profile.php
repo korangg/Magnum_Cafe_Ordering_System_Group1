@@ -133,6 +133,13 @@ if (isset($_POST['update_profile'])) {
       text-align: center;
       margin-bottom: 20px;
     }
+	.glass-container label {
+	  display: block;
+	  margin-top: 10px;
+	  font-size: 13px;
+	  font-weight: 500;
+	  color: #ddd;
+	}
     .glass-container input, .glass-container button {
       width: 100%;
       padding: 12px;
@@ -195,16 +202,34 @@ if (isset($_POST['update_profile'])) {
     </div>
     <h2>Hi <?= htmlspecialchars($userData['username']) ?></h2>
     <form method="POST" enctype="multipart/form-data">
-      <input type="text" name="new_username" value="<?= htmlspecialchars($userData['username']) ?>" required>
-      <input type="email" value="<?= htmlspecialchars($userData['email']) ?>" readonly>
-      <input type="text" name="new_phone" value="<?= htmlspecialchars($userData['phone']) ?>">
-      <input type="file" name="profile_pic" accept="image/*">
-      <button type="submit" name="update_profile">Update Profile</button>
-    </form>
+	  <!-- Username -->
+	  <label for="new_username">Username</label>
+	  <input type="text" id="new_username" name="new_username" 
+			 value="<?= htmlspecialchars($userData['username']) ?>" required>
+
+	  <!-- Email -->
+	  <label for="email">Email</label>
+	  <input type="email" id="email" 
+			 value="<?= htmlspecialchars($userData['email']) ?>" readonly>
+
+	  <!-- Phone -->
+	  <label for="new_phone">Phone Number</label>
+	  <input type="text" id="new_phone" name="new_phone" 
+			 value="<?= htmlspecialchars($userData['phone']) ?>">
+
+	  <!-- Profile Picture -->
+	  <label for="profile_pic">Profile Picture</label>
+	  <input type="file" id="profile_pic" name="profile_pic" accept="image/*">
+
+	  <button type="submit" name="update_profile">Update Profile</button>
+	</form>
     <?php if (!empty($message)): ?>
       <p style="color:#ffccff;"><?= htmlspecialchars($message) ?></p>
     <?php endif; ?>
-    <p><a href="change_password.php">Change Password</a> | <a href="userhome.php">Home</a></p>
+    <p>
+	  <a href="change_password.php">Change Password</a> | 
+	  <a href="<?php echo $_SESSION['usertype'] == 'admin' ? 'adminDashboard.php' : 'staffDashboard.php'; ?>">Home</a>
+	</p>
   </div>
 
 </body>
