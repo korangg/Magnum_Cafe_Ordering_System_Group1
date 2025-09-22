@@ -25,14 +25,13 @@ mysqli_stmt_execute($stmt);
 $result = mysqli_stmt_get_result($stmt);
 $userData = mysqli_fetch_assoc($result);
 
-// ✅ Handle profile update (username + phone + picture)
+// ✅ Handle profile update
 if (isset($_POST['update_profile'])) {
     $newUsername = trim($_POST['new_username']);
     $newPhone = trim($_POST['new_phone']);
     $profilePic = null;
 
     if (!empty($newUsername) && !empty($newPhone)) {
-        // ✅ Handle profile picture upload
         if (!empty($_FILES['profile_pic']['name'])) {
             $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
             if (in_array($_FILES['profile_pic']['type'], $allowedTypes) && $_FILES['profile_pic']['size'] < 2 * 1024 * 1024) {
@@ -42,7 +41,6 @@ if (isset($_POST['update_profile'])) {
             }
         }
 
-        // ✅ Check if username already exists (exclude current user)
         $checkUserSql = "SELECT id FROM users WHERE username = ? AND username != ?";
         $checkUserStmt = mysqli_prepare($conn, $checkUserSql);
         mysqli_stmt_bind_param($checkUserStmt, "ss", $newUsername, $username);
@@ -52,7 +50,6 @@ if (isset($_POST['update_profile'])) {
         if (mysqli_num_rows($checkUserResult) > 0) {
             $message = "⚠️ Username already taken.";
         } else {
-            // ✅ Update user data
             if ($profilePic !== null) {
                 $updateSql = "UPDATE users SET username = ?, phone = ?, profile_picture = ? WHERE username = ?";
                 $updateStmt = mysqli_prepare($conn, $updateSql);
@@ -65,7 +62,7 @@ if (isset($_POST['update_profile'])) {
             }
 
             if (mysqli_stmt_execute($updateStmt)) {
-                $_SESSION["username"] = $newUsername; // update session
+                $_SESSION["username"] = $newUsername;
                 $username = $newUsername;
                 $userData['username'] = $newUsername;
                 $userData['phone'] = $newPhone;
@@ -85,105 +82,130 @@ if (isset($_POST['update_profile'])) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Profile</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: #121212; color: #e0e0e0; }
-        .container { max-width: 960px; margin: 0 auto; padding: 20px; }
-        .header {
-            background-color: #1f1f1f;
-            background-image: linear-gradient(135deg, #1f1f1f 0%, #333 100%);
-            color: #fff; padding: 40px 20px;
-            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
-            display: flex; align-items: center;
-        }
-        .header .profile-pic {
-            width: 80px; height: 80px; border-radius: 50%;
-            background-color: #2a2a2a; color: #121212;
-            display: flex; justify-content: center; align-items: center;
-            margin-right: 20px; overflow: hidden;
-        }
-        .header .profile-pic img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-        .header h1 { font-size: 24px; font-weight: 500; }
-        .header .user-info { display: flex; align-items: center; }
-        .header-icons { margin-left: auto; display: flex; gap: 20px; align-items: center; }
-        .btn-home {
-            background: #bb86fc; padding: 8px 14px; border-radius: 8px;
-            color: white !important; font-size: 14px; font-weight: 500; transition: 0.3s;
-        }
-        .btn-home:hover { background: #9a67ea; }
-        .main-content { padding: 20px; margin-top: -30px; }
-        .dashboard-card, .about-us-section {
-            background-color: #1f1f1f; border-radius: 15px; padding: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.3); margin-bottom: 20px;
-        }
-        .dashboard-card h3 { font-size: 16px; color: #b0b0b0; font-weight: 400; }
-        input, button { font-family: 'Poppins', sans-serif; }
-        input[readonly] { background-color: #2a2a2a; color: #999; cursor: not-allowed; }
-    </style>
+  <meta charset="UTF-8">
+  <title>Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins', sans-serif; }
+    html, body { height:100%; width:100%; overflow:hidden; }
+    body { display:flex; justify-content:center; align-items:center; background:black; position:relative; }
+
+    .video-wrapper {
+      position: fixed;
+      top: 0; left: 0;
+      height: 100vh; width: 100vw;
+      overflow: hidden;
+      z-index: -2;
+    }
+    .video-wrapper iframe {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 177.77vh; height: 100vh;
+      pointer-events: none;
+      border: none;
+    }
+    @media (min-aspect-ratio: 16/9) {
+      .video-wrapper iframe {
+        width: 100vw;
+        height: 56.25vw;
+      }
+    }
+    .video-overlay {
+      position: fixed;
+      top:0; left:0;
+      width:100%; height:100%;
+      background: rgba(0,0,0,0.4);
+      z-index: -1;
+    }
+    .glass-container {
+      width: 380px;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0,0,0,0.2);
+      color: white;
+    }
+    .glass-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .glass-container input, .glass-container button {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.15);
+      color: white;
+      font-size: 14px;
+    }
+    .glass-container input[readonly] {
+      color: #ddd;
+      cursor: not-allowed;
+    }
+    .glass-container button {
+      background: white;
+      color: black;
+      border-radius: 30px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .glass-container button:hover {
+      background: transparent;
+      border: 1px solid white;
+      color: white;
+    }
+    .profile-pic {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 15px auto;
+      display: flex; align-items:center; justify-content:center;
+      background: rgba(0,0,0,0.4);
+    }
+    .profile-pic img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .glass-container p { font-size: 12px; text-align:center; margin-top:10px; }
+    .glass-container a { color:white; font-weight:bold; text-decoration:none; }
+    .glass-container a:hover { text-decoration:underline; }
+  </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <div class="user-info">
-            <div class="profile-pic">
-                <?php if (!empty($userData['profile_picture'])): ?>
-                    <img src="data:image/jpeg;base64,<?= base64_encode($userData['profile_picture']) ?>" alt="Profile Picture">
-                <?php else: ?>
-                    <span style="color:white; font-size:36px;">👤</span>
-                <?php endif; ?>
-            </div>
-            <h1>Hi <?= htmlspecialchars($userData['username']) ?></h1>
-        </div>
-        <div class="header-icons">
-            <button type="button" class="btn-home" onclick="history.back()">Home</button>
-        </div>
+
+  <!-- Video Background -->
+  <div class="video-wrapper">
+    <iframe src="https://www.youtube.com/embed/w_f01ddamVI?autoplay=1&mute=1&controls=0&loop=1&playlist=w_f01ddamVI&modestbranding=1&showinfo=0"
+      frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+  </div>
+  <div class="video-overlay"></div>
+
+  <!-- Profile Form -->
+  <div class="glass-container">
+    <div class="profile-pic">
+      <?php if (!empty($userData['profile_picture'])): ?>
+        <img src="data:image/jpeg;base64,<?= base64_encode($userData['profile_picture']) ?>" alt="Profile Picture">
+      <?php else: ?>
+        <span style="font-size:36px;">👤</span>
+      <?php endif; ?>
     </div>
+    <h2>Hi <?= htmlspecialchars($userData['username']) ?></h2>
+    <form method="POST" enctype="multipart/form-data">
+      <input type="text" name="new_username" value="<?= htmlspecialchars($userData['username']) ?>" required>
+      <input type="email" value="<?= htmlspecialchars($userData['email']) ?>" readonly>
+      <input type="text" name="new_phone" value="<?= htmlspecialchars($userData['phone']) ?>">
+      <input type="file" name="profile_pic" accept="image/*">
+      <button type="submit" name="update_profile">Update Profile</button>
+    </form>
+    <?php if (!empty($message)): ?>
+      <p style="color:#ffccff;"><?= htmlspecialchars($message) ?></p>
+    <?php endif; ?>
+    <p><a href="change_password.php">Change Password</a> | <a href="userhome.php">Home</a></p>
+  </div>
 
-    <div class="main-content">
-        <!-- Profile Update Card -->
-        <div class="dashboard-card">
-            <h3>Your Profile</h3>
-            <form action="" method="POST" enctype="multipart/form-data" style="margin-top:15px; text-align:left;">
-                <label style="font-size:14px; color:#b0b0b0;">Username</label><br>
-                <input type="text" name="new_username" value="<?= htmlspecialchars($userData['username']) ?>"
-                       style="padding:8px; border-radius:8px; border:1px solid #333; width:100%; margin-bottom:10px;" required>
-
-                <label style="font-size:14px; color:#b0b0b0;">Email</label><br>
-                <input type="email" value="<?= htmlspecialchars($userData['email']) ?>" readonly
-                       style="padding:8px; border-radius:8px; border:1px solid #333; width:100%; margin-bottom:10px;">
-
-                <label style="font-size:14px; color:#b0b0b0;">Phone Number</label><br>
-                <input type="text" name="new_phone" value="<?= htmlspecialchars($userData['phone']) ?>"
-                       style="padding:8px; border-radius:8px; border:1px solid #333; width:100%; margin-bottom:10px;">
-
-                <label style="font-size:14px; color:#b0b0b0;">Profile Picture</label><br>
-                <input type="file" name="profile_pic" accept="image/*"
-                       style="padding:8px; border-radius:8px; border:1px solid #333; width:100%; margin-bottom:10px;">
-
-                <button type="submit" name="update_profile"
-                        style="padding:10px 14px; border:none; border-radius:8px; background:#bb86fc; color:#fff; cursor:pointer; width:100%;">
-                    Update Profile
-                </button>
-            </form>
-            <?php if (!empty($message)): ?>
-                <p style="margin-top:10px; color:#bb86fc;"><?= htmlspecialchars($message) ?></p>
-            <?php endif; ?>
-        </div>
-
-        <!-- Account Section -->
-        <div class="about-us-section">
-            <h2>Account</h2>
-            <a href="change_password.php">
-                <p>Change Password <span class="arrow">&gt;</span></p>
-            </a>
-        </div>
-    </div>
-</div>
 </body>
 </html>
