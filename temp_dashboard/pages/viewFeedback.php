@@ -15,8 +15,8 @@ $conn = mysqli_connect("localhost", "root", "", "ecommerce_db");
 
 // ✅ Fetch Lists
 $productList = mysqli_query($conn, "SELECT * FROM products");
-$staffList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'staff'");
-$userList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'user'");
+$staffList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'staff' ORDER BY id DESC");
+$userList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'user' ORDER BY id DESC");
 $feedbackList = mysqli_query($conn, "SELECT * FROM feedback ORDER BY submitted_at DESC");
 $orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
 
