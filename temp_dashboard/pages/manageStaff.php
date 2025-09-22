@@ -9,8 +9,8 @@ $conn = mysqli_connect("localhost", "root", "", "ecommerce_db");
 
 // ✅ Fetch Lists
 $productList = mysqli_query($conn, "SELECT * FROM products");
-$staffList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'staff'");
-$userList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'user'");
+$staffList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'staff' ORDER BY id DESC");
+$userList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'user' ORDER BY id DESC");
 $feedbackList = mysqli_query($conn, "SELECT * FROM feedback ORDER BY submitted_at DESC");
 $orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
 
@@ -504,7 +504,7 @@ if (isset($_POST["add_staff"])) {
 
 <?php
 // ✅ Fetch staff list for dropdown
-$allStaff = mysqli_query($conn, "SELECT id, username FROM users WHERE usertype='staff'");
+$allStaff = mysqli_query($conn, "SELECT id, username FROM users WHERE usertype='staff' ORDER BY id DESC");
 
 // ✅ Reset variables
 $editData = null;
@@ -607,12 +607,7 @@ if (isset($_GET["staff_id"]) && empty($_POST["update_staff"])) {
       </div>
     </div>
   </div>
-</div>
-
-
-
-
-		
+</div>	
 	
     </div>
   </main>
