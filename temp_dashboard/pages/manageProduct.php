@@ -108,7 +108,7 @@ $orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC"
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link  active" href="../pages/manageStaff.php">
+          <a class="nav-link  " href="../pages/manageStaff.php">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 43 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>credit-card</title>
@@ -128,7 +128,7 @@ $orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC"
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link  " href="../pages/manageProduct.php">
+          <a class="nav-link  active" href="../pages/manageProduct.php">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>box-3d-50</title>
@@ -245,9 +245,9 @@ $orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC"
         <nav aria-label="breadcrumb">
           <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
             <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Manage Staff</li>
+            <li class="breadcrumb-item text-sm text-dark active" aria-current="page">Manage Product</li>
           </ol>
-          <h6 class="font-weight-bolder mb-0">Manage Staff</h6>
+          <h6 class="font-weight-bolder mb-0">Manage Product</h6>
 		  <a class="btn btn-outline-primary btn-sm mb-0" href="profile.php">Profile</a>
         </nav>
         <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
@@ -354,12 +354,91 @@ $orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC"
     <!-- End Navbar -->
     <div class="container-fluid py-4">
 		
-<!-- Manage Staff -->
+<!-- Manage Product -->
+<?php
+// ✅ Fetch all products for table
+$productList = mysqli_query($conn, "SELECT * FROM products ORDER BY id DESC");
+
+// ✅ Fetch products for dropdown
+$allProducts = mysqli_query($conn, "SELECT id, name FROM products ORDER BY id DESC");
+
+// ✅ Reset vars
+$editData = null;
+$updateMessage = "";
+$productMessage = "";
+
+// ✅ Add Product
+if (isset($_POST["add_product"])) {
+    $name = trim($_POST["name"]);
+    $description = trim($_POST["description"]);
+    $price = floatval($_POST["price"]);
+    $category = trim($_POST["category"]);
+    $stock = intval($_POST["stock"]);
+
+    if (empty($name) || $price <= 0 || empty($category) || $stock < 0) {
+        $productMessage = "<p class='font-weight-bolder text-danger'>❌ Please fill all required fields correctly.</p>";
+    } else {
+        $insertProduct = mysqli_query($conn, 
+            "INSERT INTO products (name, description, price, category, stock) 
+             VALUES ('$name', '$description', '$price', '$category', '$stock')"
+        );
+
+        $productMessage = $insertProduct
+            ? "<p class='font-weight-bolder text-success'>✅ Product added successfully!</p>"
+            : "<p class='font-weight-bolder text-danger'>❌ Failed to add product.</p>";
+    }
+}
+
+// ✅ Update Product
+if (isset($_POST["update_product"])) {
+    $id = intval($_POST["id"]);
+    $name = trim($_POST["name"]);
+    $description = trim($_POST["description"]);
+    $price = floatval($_POST["price"]);
+    $category = trim($_POST["category"]);
+    $stock = intval($_POST["stock"]);
+
+    $updateQuery = mysqli_query($conn, 
+        "UPDATE products 
+         SET name='$name', description='$description', price='$price', category='$category', stock='$stock' 
+         WHERE id=$id"
+    );
+
+    if ($updateQuery) {
+        $updateMessage = "<p class='font-weight-bolder text-success'>✅ Product updated successfully!</p>";
+        $editData = null;
+        unset($_GET["product_id"]);
+    } else {
+        $updateMessage = "<p class='font-weight-bolder text-danger'>❌ Failed to update product.</p>";
+    }
+}
+
+// ✅ Fetch selected product (from dropdown or edit button)
+if (isset($_GET["product_id"]) && empty($_POST["update_product"])) {
+    $productId = intval($_GET["product_id"]);
+    $productQuery = mysqli_query($conn, "SELECT * FROM products WHERE id = $productId");
+    $editData = mysqli_fetch_assoc($productQuery);
+}
+
+// ✅ Delete Product
+if (isset($_GET["delete_product"])) {
+    $productId = intval($_GET["delete_product"]);
+    $delete = mysqli_query($conn, "DELETE FROM products WHERE id = $productId");
+
+    if ($delete) {
+        echo "<script>alert('✅ Product deleted successfully!'); window.location='manageProduct.php';</script>";
+    } else {
+        echo "<script>alert('❌ Failed to delete product.');</script>";
+    }
+}
+?>
+
+<!-- Manage Product -->
 <div class="row">
   <div class="col-12">
     <div class="card mb-4">
       <div class="card-header pb-0">
-        <h6>Manage Staff</h6>
+        <h6>Manage Product</h6>
       </div>
       <div class="card-body px-0 pt-0 pb-2">
         <div class="table-responsive p-0">
@@ -367,24 +446,28 @@ $orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC"
             <thead>
               <tr>
                 <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">ID</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Username</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Shift</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Name</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Description</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Price</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Category</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Stock</th>
                 <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
               </tr>
             </thead>
             <tbody>
-              <?php while ($s = mysqli_fetch_assoc($staffList)): ?>
+              <?php while ($p = mysqli_fetch_assoc($productList)): ?>
               <tr>
-                <td><p class="text-xs font-weight-bold mb-0"><?= $s["id"] ?></p></td>
-                <td><h6 class="mb-0 text-sm"><?= htmlspecialchars($s["username"]) ?></h6></td>
-                <td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($s["email"]) ?></p></td>
-                <td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($s["shift"]) ?></p></td>
+                <td><p class="text-xs font-weight-bold mb-0"><?= $p["id"] ?></p></td>
+                <td><h6 class="mb-0 text-sm"><?= htmlspecialchars($p["name"]) ?></h6></td>
+                <td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($p["description"]) ?></p></td>
+                <td><p class="text-xs text-secondary mb-0"><?= number_format($p["price"], 2) ?></p></td>
+                <td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($p["category"]) ?></p></td>
+                <td><p class="text-xs text-secondary mb-0"><?= $p["stock"] ?></p></td>
                 <td class="text-center">
-                  <a href="manageStaff.php?staff_id=<?= $s['id'] ?>" class="text-info font-weight-bold text-xs">Edit</a> |
-                  <a href="?delete_staff=<?= $s["id"] ?>" 
+                  <a href="?product_id=<?= $p["id"] ?>" class="text-info font-weight-bold text-xs">Edit</a> | 
+                  <a href="?delete_product=<?= $p["id"] ?>" 
                      class="text-danger font-weight-bold text-xs" 
-                     onclick="return confirm('Delete this staff?')">Delete</a>
+                     onclick="return confirm('Delete this product?')">Delete</a>
                 </td>
               </tr>
               <?php endwhile; ?>
@@ -396,101 +479,32 @@ $orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC"
   </div>
 </div>
 
-		
-<?php
-// ✅ Delete Staff Logic
-if (isset($_GET["delete_staff"])) {
-    $staffId = intval($_GET["delete_staff"]); // prevent SQL injection
-
-    $delete = mysqli_query($conn, "DELETE FROM users WHERE id = $staffId AND usertype = 'staff'");
-
-    if ($delete) {
-        echo "<script>alert('✅ Staff deleted successfully!'); window.location='manageStaff.php';</script>";
-    } else {
-        echo "<script>alert('❌ Failed to delete staff.');</script>";
-    }
-}
-?>
-
-
-		
-		
-<?php
-// ✅ Add Staff Logic
-$staffMessage = "";
-
-if (isset($_POST["add_staff"])) {
-    $staffUsername = trim($_POST["username"]);
-    $staffEmail = trim($_POST["email"]);
-    $staffPass = trim($_POST["password"]);
-    $staffShift = trim($_POST["shift"]); // ✅ New field
-
-    // Check if username already exists
-    $checkUser = mysqli_query($conn, "SELECT * FROM users WHERE username = '$staffUsername'");
-    if (mysqli_num_rows($checkUser) > 0) {
-        $staffMessage = "<p class='font-weight-bolder text-danger'>❌ Username already taken.</p>";
-    }
-    // Check if email already exists
-    elseif (mysqli_num_rows(mysqli_query($conn, "SELECT * FROM users WHERE email = '$staffEmail'")) > 0) {
-        $staffMessage = "<p class='font-weight-bolder text-danger'>❌ Email already registered.</p>";
-    }
-    // Validate password strength
-    elseif (!preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/', $staffPass)) {
-        $staffMessage = "<p class='font-weight-bolder text-danger'>❌ Password must be at least 6 chars and include uppercase, lowercase, and number.</p>";
-    }
-    // Validate shift
-    elseif (empty($staffShift)) {
-        $staffMessage = "<p class='font-weight-bolder text-danger'>❌ Please select a shift.</p>";
-    }
-    else {
-        $hashedStaffPass = password_hash($staffPass, PASSWORD_DEFAULT);
-        $insertStaff = mysqli_query($conn, 
-            "INSERT INTO users (username, email, password, usertype, shift) 
-             VALUES ('$staffUsername', '$staffEmail', '$hashedStaffPass', 'staff', '$staffShift')"
-        );
-
-        if ($insertStaff) {
-            $staffMessage = "<p class='font-weight-bolder text-success'>✅ Staff added successfully!</p>";
-        } else {
-            $staffMessage = "<p class='font-weight-bolder text-danger'>❌ Failed to add staff.</p>";
-        }
-    }
-}
-?>
-
-<!-- Add Staff -->
+<!-- Add Product -->
 <div class="row">
   <div class="col-12">
     <div class="card mb-4">
       <div class="card-header pb-0">
-        <h6>Add Staff</h6>
-        <!-- ✅ Show Message -->
-        <?php if (!empty($staffMessage)) echo $staffMessage; ?>
+        <h6>Add Product</h6>
+        <?= $productMessage ?>
       </div>
       <div class="card-body px-0 pt-0 pb-2">
         <div class="table-responsive p-0">
           <form method="POST" class="p-3">
             <div class="row">
+              <div class="col-md-2 mb-2"><input type="text" name="name" class="form-control" placeholder="Product Name" required></div>
+              <div class="col-md-3 mb-2"><input type="text" name="description" class="form-control" placeholder="Description"></div>
+              <div class="col-md-2 mb-2"><input type="number" step="0.01" name="price" class="form-control" placeholder="Price" required></div>
               <div class="col-md-3 mb-2">
-                <input type="text" name="username" class="form-control" placeholder="Username" required>
-              </div>
-              <div class="col-md-3 mb-2">
-                <input type="email" name="email" class="form-control" placeholder="Email" required>
-              </div>
-              <div class="col-md-3 mb-2">
-                <input type="password" name="password" class="form-control" placeholder="Password" required>
-              </div>
-              <!-- ✅ Shift Dropdown -->
-              <div class="col-md-2 mb-2">
-                <select name="shift" class="form-control" required>
-                  <option value="">Select Shift</option>
-                  <option value="Morning">Morning</option>
-                  <option value="Afternoon">Afternoon</option>
-                  <option value="Night">Night</option>
+                <select name="category" class="form-control" required>
+                  <option value="">Select Category</option>
+                  <option value="Starters">Starters</option>
+                  <option value="Salads">Salads</option>
+                  <option value="Speciality">Speciality</option>
                 </select>
               </div>
-              <div class="col-md-1 mb-2">
-                <button type="submit" name="add_staff" class="btn btn-primary w-100">Add</button>
+              <div class="col-md-2 mb-2"><input type="number" name="stock" class="form-control" placeholder="Stock" required></div>
+              <div class="col-12 d-flex justify-content-center mb-2">
+                <button type="submit" name="add_product" class="btn btn-primary">Add</button>
               </div>
             </div>
           </form>
@@ -500,75 +514,27 @@ if (isset($_POST["add_staff"])) {
   </div>
 </div>
 
-
-
-<?php
-// ✅ Fetch staff list for dropdown
-$allStaff = mysqli_query($conn, "SELECT id, username FROM users WHERE usertype='staff'");
-
-// ✅ Reset variables
-$editData = null;
-$updateMessage = "";
-
-// ✅ Update staff credentials
-if (isset($_POST["update_staff"])) {
-    $id = intval($_POST["id"]);
-    $username = trim($_POST["username"]);
-    $email = trim($_POST["email"]);
-    $shift = trim($_POST["shift"]);
-    $password = trim($_POST["password"]);
-
-    if (!empty($password)) {
-        $hashed = password_hash($password, PASSWORD_DEFAULT);
-        $updateQuery = mysqli_query($conn, 
-            "UPDATE users SET username='$username', email='$email', shift='$shift', password='$hashed' WHERE id=$id"
-        );
-    } else {
-        $updateQuery = mysqli_query($conn, 
-            "UPDATE users SET username='$username', email='$email', shift='$shift' WHERE id=$id"
-        );
-    }
-
-    if ($updateQuery) {
-        $updateMessage = "<p class='font-weight-bolder text-success'>✅ Staff updated successfully!</p>";
-        // ✅ Clear edit data so form resets
-        $editData = null;
-        unset($_GET["staff_id"]);
-    } else {
-        $updateMessage = "<p class='font-weight-bolder text-danger'>❌ Failed to update staff.</p>";
-    }
-}
-
-// ✅ Fetch selected staff details (only if not just updated)
-if (isset($_GET["staff_id"]) && empty($_POST["update_staff"])) {
-    $staffId = intval($_GET["staff_id"]);
-    $staffQuery = mysqli_query($conn, "SELECT * FROM users WHERE id = $staffId AND usertype='staff'");
-    $editData = mysqli_fetch_assoc($staffQuery);
-}
-?>
-
-<!-- Edit Staff -->
+<!-- Edit Product -->
 <div class="row">
   <div class="col-12">
     <div class="card mb-4">
       <div class="card-header pb-0">
-        <h6>Edit Staff</h6>
+        <h6>Edit Product</h6>
         <?= $updateMessage ?>
       </div>
       <div class="card-body px-0 pt-0 pb-2">
         <div class="table-responsive p-0">
-          <!-- Step 1: Select Staff by ID -->
+          <!-- Step 1: Dropdown (optional if not clicked from Action) -->
           <form method="GET" class="p-3">
             <div class="row">
               <div class="col-md-4 mb-2">
-                <select name="staff_id" class="form-control" onchange="this.form.submit()" required>
-                  <option value="">Select Staff ID</option>
+                <select name="product_id" class="form-control" onchange="this.form.submit()" required>
+                  <option value="">Select Product ID</option>
                   <?php 
-                  // ✅ Always reset dropdown after update
-                  mysqli_data_seek($allStaff, 0); 
-                  while ($st = mysqli_fetch_assoc($allStaff)): ?>
-                    <option value="<?= $st['id'] ?>" <?= (isset($_GET['staff_id']) && $_GET['staff_id'] == $st['id'] && !$updateMessage) ? 'selected' : '' ?>>
-                      <?= $st['id'] ?> - <?= htmlspecialchars($st['username']) ?>
+                  mysqli_data_seek($allProducts, 0); 
+                  while ($pr = mysqli_fetch_assoc($allProducts)): ?>
+                    <option value="<?= $pr['id'] ?>" <?= (isset($_GET['product_id']) && $_GET['product_id'] == $pr['id'] && !$updateMessage) ? 'selected' : '' ?>>
+                      <?= $pr['id'] ?> - <?= htmlspecialchars($pr['name']) ?>
                     </option>
                   <?php endwhile; ?>
                 </select>
@@ -576,29 +542,31 @@ if (isset($_GET["staff_id"]) && empty($_POST["update_staff"])) {
             </div>
           </form>
 
-          <!-- Step 2: Show autofilled form if staff selected -->
+          <!-- Step 2: Auto-filled edit form -->
           <?php if ($editData): ?>
           <form method="POST" class="p-3">
             <input type="hidden" name="id" value="<?= $editData['id'] ?>">
             <div class="row">
+              <div class="col-md-2 mb-2"><input type="text" name="name" class="form-control" value="<?= htmlspecialchars($editData['name']) ?>" required></div>
+              <div class="col-md-3 mb-2"><input type="text" name="description" class="form-control" value="<?= htmlspecialchars($editData['description']) ?>"></div>
+              <div class="col-md-2 mb-2"><input type="number" step="0.01" name="price" class="form-control" value="<?= $editData['price'] ?>" required></div>
               <div class="col-md-3 mb-2">
-                <input type="text" name="username" class="form-control" value="<?= htmlspecialchars($editData['username']) ?>" required>
-              </div>
-              <div class="col-md-3 mb-2">
-                <input type="email" name="email" class="form-control" value="<?= htmlspecialchars($editData['email']) ?>" required>
-              </div>
-              <div class="col-md-3 mb-2">
-                <select name="shift" class="form-control" required>
-                  <option value="Morning" <?= $editData['shift']=="Morning" ? "selected" : "" ?>>Morning</option>
-                  <option value="Afternoon" <?= $editData['shift']=="Afternoon" ? "selected" : "" ?>>Afternoon</option>
-                  <option value="Night" <?= $editData['shift']=="Night" ? "selected" : "" ?>>Night</option>
-                </select>
-              </div>
-              <div class="col-md-3 mb-2">
-                <input type="password" name="password" class="form-control" placeholder="Leave blank to keep current password">
-              </div>
+			    <select name="category" class="form-control" required>
+				  <option value="Starters" <?= ($editData['category'] == "Starters") ? "selected" : "" ?>>Starters</option>
+				  <option value="Salads" <?= ($editData['category'] == "Salads") ? "selected" : "" ?>>Salads</option>
+				  <option value="Speciality" <?= ($editData['category'] == "Speciality") ? "selected" : "" ?>>Speciality</option>
+				  <!-- ✅ Extra option in case category is not in predefined list -->
+				  <?php if (!in_array($editData['category'], ["Starters","Salads","Speciality"])): ?>
+				    <option value="<?= htmlspecialchars($editData['category']) ?>" selected>
+					  <?= htmlspecialchars($editData['category']) ?>
+				    </option>
+				  <?php endif; ?>
+			    </select>
+			  </div>
+
+              <div class="col-md-2 mb-2"><input type="number" name="stock" class="form-control" value="<?= $editData['stock'] ?>" required></div>
               <div class="col-md-12 mb-2">
-                <button type="submit" name="update_staff" class="btn btn-success w-100">Update Staff</button>
+                <button type="submit" name="update_product" class="btn btn-success w-100">Update Product</button>
               </div>
             </div>
           </form>
@@ -608,6 +576,8 @@ if (isset($_GET["staff_id"]) && empty($_POST["update_staff"])) {
     </div>
   </div>
 </div>
+
+
 
 
 

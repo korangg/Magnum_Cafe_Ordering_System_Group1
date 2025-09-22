@@ -14,11 +14,11 @@ if (isset($_GET["delete_user"])) {
 }
 
 // ✅ Fetch Lists
-$products = mysqli_query($conn, "SELECT * FROM products");
+$productList = mysqli_query($conn, "SELECT * FROM products");
 $staffList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'staff'");
 $userList = mysqli_query($conn, "SELECT * FROM users WHERE usertype = 'user'");
 $feedbackList = mysqli_query($conn, "SELECT * FROM feedback ORDER BY submitted_at DESC");
-$orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
+$orderList = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
 
 ?>
 
@@ -74,7 +74,7 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
     <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link  active" href="../pages/dashboard.html">
+          <a class="nav-link  active" href="../pages/adminDashboard.php">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>shop </title>
@@ -134,7 +134,7 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link  " href="../pages/virtual-reality.html">
+          <a class="nav-link  " href="../pages/manageProduct.php">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>box-3d-50</title>
@@ -151,11 +151,11 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
                 </g>
               </svg>
             </div>
-            <span class="nav-link-text ms-1">Virtual Reality</span>
+            <span class="nav-link-text ms-1">Manage Product</span>
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link  " href="../pages/rtl.html">
+          <a class="nav-link  " href="../pages/manageOrder.php">
             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
               <svg width="12px" height="12px" viewBox="0 0 40 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <title>settings</title>
@@ -172,7 +172,7 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
                 </g>
               </svg>
             </div>
-            <span class="nav-link-text ms-1">RTL</span>
+            <span class="nav-link-text ms-1">Manage Order</span>
           </a>
         </li>
         <li class="nav-item mt-3">
@@ -322,49 +322,52 @@ $orders = mysqli_query($conn, "SELECT * FROM orders ORDER BY order_date DESC");
     </nav>
     <!-- End Navbar -->
     <div class="container-fluid py-4">
-	    <div class="row">
-			<div class="col-12">
-				<div class="card mb-4">
-					<div class="card-header pb-0">
-						<h6>View Customer</h6>
-					</div>
-						<div class="card-body px-0 pt-0 pb-2">
-							<div class="table-responsive p-0">
-								<table class="table align-items-center mb-0">
-									<thead>
-										<tr>
-											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">ID</th>
-											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Username</th>
-											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
-											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone Number</th>
-											<th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Verified</th>
-											<th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Action</th>
-										</tr>
-									</thead>
-									<tbody>
-										<?php while ($u = mysqli_fetch_assoc($userList)): ?>
-										<tr>
-											<td><p class="text-xs font-weight-bold mb-0"><?= $u["id"] ?></p></td>
-											<td><h6 class="mb-0 text-sm"><?= htmlspecialchars($u["username"]) ?></h6></td>
-											<td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($u["email"]) ?></p></td>
-											<td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($u["phone"]) ?></p></td>
-											<td><p class="text-xs mb-0"><?= $u["verified"] ? "✅" : "❌" ?></p></td>
-											<td class="align-middle text-center">
-												<a href="?delete_user=<?= $u["id"] ?>" 
-												   class="text-danger font-weight-bold text-xs" 
-												   onclick="return confirm('Delete this user?')">Delete</a>
-											</td>
-										</tr>
-										<?php endwhile; ?>
-									</tbody>
-								</table>
-							</div>
-						</div>
-					
-				</div>
-			</div>
-		</div>
-		
+
+<!-- View Customer -->
+<div class="row">
+  <div class="col-12">
+    <div class="card mb-4">
+      <div class="card-header pb-0">
+        <h6>View Customer</h6>
+      </div>
+      <div class="card-body px-0 pt-0 pb-2">
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">ID</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Username</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Email</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Phone Number</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Verified</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php while ($u = mysqli_fetch_assoc($userList)): ?>
+              <tr>
+                <td><p class="text-xs font-weight-bold mb-0"><?= $u["id"] ?></p></td>
+                <td><h6 class="mb-0 text-sm"><?= htmlspecialchars($u["username"]) ?></h6></td>
+                <td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($u["email"]) ?></p></td>
+                <td><p class="text-xs text-secondary mb-0"><?= htmlspecialchars($u["phone"]) ?></p></td>
+                <td><p class="text-xs mb-0"><?= $u["verified"] ? "✅" : "❌" ?></p></td>
+                <td class="text-center">
+                  <!-- ✅ Clicking Edit loads edit form below -->
+                  <a href="adminDashboard.php?user_id=<?= $u['id'] ?>" class="text-info font-weight-bold text-xs">Edit</a> | 
+                  <a href="?delete_user=<?= $u["id"] ?>" 
+                     class="text-danger font-weight-bold text-xs" 
+                     onclick="return confirm('Delete this user?')">Delete</a>
+                </td>
+              </tr>
+              <?php endwhile; ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <?php
 // ✅ Fetch user list for dropdown
 $allUsers = mysqli_query($conn, "SELECT id, username FROM users WHERE usertype='user'");
@@ -385,16 +388,15 @@ if (isset($_POST["update_user"])) {
 
     if ($updateQuery) {
         $updateUserMessage = "<p class='font-weight-bolder text-success'>✅ User updated successfully!</p>";
-        // ✅ Clear form after update
         $editUserData = null;
-        unset($_GET["user_id"]);
+        unset($_GET["user_id"]); // clear GET after update
     } else {
         $updateUserMessage = "<p class='font-weight-bolder text-danger'>❌ Failed to update user.</p>";
     }
 }
 
-// ✅ Fetch selected user details (only if not just updated)
-if (isset($_GET["user_id"]) && empty($_POST["update_user"])) {
+// ✅ Fetch selected user details (from Action "Edit" OR Dropdown)
+if (isset($_GET["user_id"])) {
     $userId = intval($_GET["user_id"]);
     $userQuery = mysqli_query($conn, "SELECT * FROM users WHERE id = $userId AND usertype='user'");
     $editUserData = mysqli_fetch_assoc($userQuery);
@@ -411,17 +413,16 @@ if (isset($_GET["user_id"]) && empty($_POST["update_user"])) {
       </div>
       <div class="card-body px-0 pt-0 pb-2">
         <div class="table-responsive p-0">
-          <!-- Step 1: Select User by ID -->
+          <!-- Step 1: Select User by ID (Dropdown way) -->
           <form method="GET" class="p-3">
             <div class="row">
               <div class="col-md-4 mb-2">
                 <select name="user_id" class="form-control" onchange="this.form.submit()" required>
                   <option value="">Select User ID</option>
                   <?php 
-                  // ✅ Reset dropdown after update
                   mysqli_data_seek($allUsers, 0); 
                   while ($u = mysqli_fetch_assoc($allUsers)): ?>
-                    <option value="<?= $u['id'] ?>" <?= (isset($_GET['user_id']) && $_GET['user_id'] == $u['id'] && !$updateUserMessage) ? 'selected' : '' ?>>
+                    <option value="<?= $u['id'] ?>" <?= (isset($_GET['user_id']) && $_GET['user_id'] == $u['id']) ? 'selected' : '' ?>>
                       <?= $u['id'] ?> - <?= htmlspecialchars($u['username']) ?>
                     </option>
                   <?php endwhile; ?>
@@ -452,6 +453,7 @@ if (isset($_GET["user_id"]) && empty($_POST["update_user"])) {
     </div>
   </div>
 </div>
+
 
 		
 		
