@@ -124,82 +124,109 @@ $conn->close();
         <img src="assets/img/menu/<?php echo htmlspecialchars($product['image']); ?>" alt="">
         <p><strong>Price:</strong> $<?php echo htmlspecialchars($product['price']); ?></p>
         <p><?php echo htmlspecialchars($product['description']); ?></p>
+        
+        <p id="stock-message"></p> <!-- Element for stock message -->
 
         <?php if ((int)$product['stock'] > 0): ?>
         <div class="add-to-cart">
             <div class="quantity-selector">
                 <button type="button" onclick="changeQty(-1)">−</button>
-                <input type="number" id="quantity" value="1" min="1" max="<?php echo (int)$product['stock']; ?>" readonly>
+                <input type="number" id="quantity" value="1" min="1" readonly>
                 <button type="button" onclick="changeQty(1)">+</button>
             </div>
-
             <button type="button" class="cart-btn" onclick="addToCart()">🛒 Add to Cart</button>
         </div>
         <?php else: ?>
         <p class="out-of-stock">❌ Food out of order</p>
         <?php endif; ?>
-
-        <a href="userhome.php">← Back to Menu</a>
+        
+        <a href="userhome.php#menu">← Back to Menu</a>
     </div>
 
     <script>
-        function changeQty(val) {
-            const qtyInput = document.getElementById("quantity");
-            let current = parseInt(qtyInput.value, 10) || 1;
-            const min = parseInt(qtyInput.min, 10) || 1;
-            const max = parseInt(qtyInput.max, 10) || 1;
+        function updateMaxQuantity() {
+            const maxStock = parseInt(<?php echo json_encode((int)$product['stock']); ?>, 10);
+            let cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const idx = cart.findIndex(it => it.id === parseInt(<?php echo json_encode((int)$product['id']); ?>, 10));
+            const existingQty = idx > -1 ? cart[idx].qty : 0;
 
-            let newVal = current + val;
-            if (newVal < min) newVal = min;
-            if (newVal > max) newVal = max;
-            qtyInput.value = newVal;
+            const quantityInput = document.getElementById("quantity");
+            const currentQty = parseInt(quantityInput.value, 10) || 1;
+
+            const maxAllowedQty = maxStock - existingQty;
+
+            // Update the max attribute of the input field
+            quantityInput.max = maxAllowedQty;
+
+            // Enable/Disable buttons based on max allowed quantity
+            const increaseButton = document.querySelector('.quantity-selector button[onclick="changeQty(1)"]');
+            const decreaseButton = document.querySelector('.quantity-selector button[onclick="changeQty(-1)"]');
+            
+            increaseButton.disabled = currentQty >= maxAllowedQty;
+            decreaseButton.disabled = currentQty <= 1;
+
+            // Automatically set to max allowed if current exceeds it
+            if (currentQty > maxAllowedQty) {
+                quantityInput.value = maxAllowedQty; // Set to max allowed
+            }
+        }
+
+        function changeQty(amount) {
+            const quantityInput = document.getElementById("quantity");
+            let currentQty = parseInt(quantityInput.value, 10) || 1;
+            currentQty += amount;
+
+            // Ensure quantity does not go below 1
+            if (currentQty < 1) currentQty = 1;
+
+            quantityInput.value = currentQty; // Update the quantity input
+            updateMaxQuantity(); // Update limits based on the new quantity
         }
 
         function addToCart() {
-            // read qty and stock as integers
             const qty = parseInt(document.getElementById("quantity").value, 10) || 1;
             const maxStock = parseInt(<?php echo json_encode((int)$product['stock']); ?>, 10);
-
-            // build product object with numeric qty
-            const productToAdd = {
-                id: parseInt(<?php echo json_encode((int)$product['id']); ?>, 10),
-                name: <?php echo json_encode($product['name']); ?>,
-                price: parseFloat(<?php echo json_encode((float)$product['price']); ?>),
-                image: <?php echo json_encode($product['image']); ?>,
-                qty: qty
-            };
-
-            // load cart and normalize types
             let cart = JSON.parse(localStorage.getItem('cart')) || [];
-            cart = cart.map(it => {
-                it.qty = parseInt(it.qty, 10) || 0;
-                it.id = parseInt(it.id, 10) || it.id;
-                return it;
-            });
+            const idx = cart.findIndex(it => it.id === parseInt(<?php echo json_encode((int)$product['id']); ?>, 10));
+            const existingQty = idx > -1 ? cart[idx].qty : 0;
 
-            // find existing by numeric id
-            const idx = cart.findIndex(it => it.id === productToAdd.id);
+            // Check if adding to cart exceeds stock
+            if ((existingQty + qty) > maxStock) {
+				const productToAdd = {
+					name: <?php echo json_encode($product['name']); ?>,
+					stock: maxStock,
+					existingQty: existingQty
+				};
+				
+				alert("⚠️ Apologies, but we only have " + productToAdd.stock + 
+					  " units of the " + productToAdd.name + 
+					  " in stock. Your cart currently contains " + productToAdd.existingQty + 
+					  " which match the available quantity.");
+				return; // Prevent adding to cart if it exceeds stock
+			}
 
             if (idx > -1) {
-                const existingQty = cart[idx].qty;
-                // allow equal to stock, block only if exceeds
-                if ((existingQty + productToAdd.qty) > maxStock) {
-                    alert("⚠️ Sorry, only " + maxStock + " stock available for " + productToAdd.name);
-                    return;
-                }
-                cart[idx].qty = existingQty + productToAdd.qty;
+                cart[idx].qty += qty; // Update quantity
             } else {
-                if (productToAdd.qty > maxStock) {
-                    alert("⚠️ Sorry, only " + maxStock + " stock available for " + productToAdd.name);
-                    return;
-                }
-                cart.push(productToAdd);
+                cart.push({
+                    id: parseInt(<?php echo json_encode((int)$product['id']); ?>, 10),
+                    name: <?php echo json_encode($product['name']); ?>,
+                    price: parseFloat(<?php echo json_encode((float)$product['price']); ?>),
+                    image: <?php echo json_encode($product['image']); ?>,
+                    qty: qty
+                });
             }
 
-            // save normalized cart
             localStorage.setItem('cart', JSON.stringify(cart));
-            alert(productToAdd.name + " added to cart!");
+
+            // Refresh the page and show alert
+            setTimeout(() => {
+                alert("🛒 " + <?php echo json_encode($product['name']); ?> + " added to cart!");
+                location.reload(); // Refresh the page
+            }, 100); // Delay to ensure cart is updated before refresh
         }
+
+        document.addEventListener("DOMContentLoaded", updateMaxQuantity);
     </script>
 </body>
 </html>
