@@ -338,9 +338,9 @@ mysqli_close($conn);
             <div class="col-lg-12 d-flex justify-content-center">
                 <ul class="menu-filters isotope-filters">
                     <li data-filter="*" class="filter-active">All</li>
-                    <li data-filter=".filter-starters">Starters</li>
-                    <li data-filter=".filter-salads">Salads</li>
-                    <li data-filter=".filter-specialty">Specialty</li>
+                    <li data-filter=".filter-indulgences">Indulgences</li> 
+					<li data-filter=".filter-chillers">Chillers</li> 
+					<li data-filter=".filter-specialty">Specialty</li>
                 </ul>
             </div>
         </div>
@@ -364,7 +364,7 @@ mysqli_close($conn);
                         <img src="assets/img/menu/<?php echo htmlspecialchars($row['image']); ?>" class="menu-img" alt="<?php echo htmlspecialchars($row['name']); ?>">
                         <div class="menu-content">
                             <a href="product_detail.php?id=<?php echo $row['id']; ?>"><?php echo htmlspecialchars($row['name']); ?></a>
-                            <span>$<?php echo number_format($row['price'], 2); ?></span>
+                            <span>RM<?php echo number_format($row['price'], 2); ?></span>
                         </div>
                         <div class="menu-ingredients">
                             <?php echo htmlspecialchars($row['description']); ?>
@@ -396,19 +396,16 @@ mysqli_close($conn);
           <div class="col-lg-3">
             <ul class="nav nav-tabs flex-column">
               <li class="nav-item">
-                <a class="nav-link active show" data-bs-toggle="tab" href="#specials-tab-1">Modi sit est</a>
+                <a class="nav-link active show" data-bs-toggle="tab" href="#specials-tab-1">Berry Crepe Delight</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#specials-tab-2">Unde praesentium sed</a>
+                <a class="nav-link" data-bs-toggle="tab" href="#specials-tab-2">Magnum Cendol</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#specials-tab-3">Pariatur explicabo vel</a>
+                <a class="nav-link" data-bs-toggle="tab" href="#specials-tab-3">Magnum Crowned Jewel</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#specials-tab-4">Nostrum qui quasi</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#specials-tab-5">Iusto ut expedita aut</a>
+                <a class="nav-link" data-bs-toggle="tab" href="#specials-tab-4">Triple Choco Cookie</a>
               </li>
             </ul>
           </div>
@@ -417,60 +414,48 @@ mysqli_close($conn);
               <div class="tab-pane active show" id="specials-tab-1">
                 <div class="row">
                   <div class="col-lg-8 details order-2 order-lg-1">
-                    <h3>Architecto ut aperiam autem id</h3>
-                    <p class="fst-italic">Qui laudantium consequatur laborum sit qui ad sapiente dila parde sonata raqer a videna mareta paulona marka</p>
-                    <p>Et nobis maiores eius. Voluptatibus ut enim blanditiis atque harum sint. Laborum eos ipsum ipsa odit magni. Incidunt hic ut molestiae aut qui. Est repellat minima eveniet eius et quis magni nihil. Consequatur dolorem quaerat quos qui similique accusamus nostrum rem vero</p>
+                    <h3>Berry Crepe Delight</h3>
+                    <p class="fst-italic">Indulge in a delicate crepe filled with a luscious blend of fresh berries, drizzled with a sweet berry sauce.</p>
+                    <p>Topped with a dollop of whipped cream, this delightful dessert offers a perfect balance of sweetness and tartness, making it a must-try for berry lovers!</p>
                   </div>
                   <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/specials-1.png" alt="" class="img-fluid">
+                    <img src="assets/img/menu/berry-crepe-delight.jpg" alt="" class="img-fluid">
                   </div>
                 </div>
               </div>
               <div class="tab-pane" id="specials-tab-2">
                 <div class="row">
                   <div class="col-lg-8 details order-2 order-lg-1">
-                    <h3>Et blanditiis nemo veritatis excepturi</h3>
-                    <p class="fst-italic">Qui laudantium consequatur laborum sit qui ad sapiente dila parde sonata raqer a videna mareta paulona marka</p>
-                    <p>Ea ipsum voluptatem consequatur quis est. Illum error ullam omnis quia et reiciendis sunt sunt est. Non aliquid repellendus itaque accusamus eius et velit ipsa voluptates. Optio nesciunt eaque beatae accusamus lerode pakto madirna desera vafle de nideran pal</p>
+                    <h3>Magnum Cendol</h3>
+                    <p class="fst-italic">Experience a twist on a classic favorite with our Magnum Cendol.</p>
+                    <p>This indulgent treat features creamy coconut milk, pandan jelly, and a rich chocolate ice cream core, all enveloped in a chocolate shell. It’s a refreshing dessert that combines traditional flavors with modern flair.</p>
                   </div>
                   <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/specials-2.png" alt="" class="img-fluid">
+                    <img src="assets/img/menu/magnum-cendol.jpg" alt="" class="img-fluid">
                   </div>
                 </div>
               </div>
               <div class="tab-pane" id="specials-tab-3">
                 <div class="row">
                   <div class="col-lg-8 details order-2 order-lg-1">
-                    <h3>Impedit facilis occaecati odio neque aperiam sit</h3>
-                    <p class="fst-italic">Eos voluptatibus quo. Odio similique illum id quidem non enim fuga. Qui natus non sunt dicta dolor et. In asperiores velit quaerat perferendis aut</p>
-                    <p>Iure officiis odit rerum. Harum sequi eum illum corrupti culpa veritatis quisquam. Neque necessitatibus illo rerum eum ut. Commodi ipsam minima molestiae sed laboriosam a iste odio. Earum odit nesciunt fugiat sit ullam. Soluta et harum voluptatem optio quae</p>
+                    <h3>Magnum Crowned Jewel</h3>
+                    <p class="fst-italic">Treat yourself like royalty with our Magnum Crowned Jewel.</p>
+                    <p>This luxurious chocolate ice cream is wrapped in a rich chocolate coating and adorned with a sparkling mix of crunchy toppings. Each bite is a decadent experience that will leave you craving more.</p>
                   </div>
                   <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/specials-3.png" alt="" class="img-fluid">
+                    <img src="assets/img/menu/magnum-crowned-jewel.jpg" alt="" class="img-fluid">
                   </div>
                 </div>
               </div>
               <div class="tab-pane" id="specials-tab-4">
                 <div class="row">
                   <div class="col-lg-8 details order-2 order-lg-1">
-                    <h3>Fuga dolores inventore laboriosam ut est accusamus laboriosam dolore</h3>
-                    <p class="fst-italic">Totam aperiam accusamus. Repellat consequuntur iure voluptas iure porro quis delectus</p>
-                    <p>Eaque consequuntur consequuntur libero expedita in voluptas. Nostrum ipsam necessitatibus aliquam fugiat debitis quis velit. Eum ex maxime error in consequatur corporis atque. Eligendi asperiores sed qui veritatis aperiam quia a laborum inventore</p>
+                    <h3>Triple Choco Cookie</h3>
+                    <p class="fst-italic">Satisfy your chocolate cravings with our Triple Choco Cookie.</p>
+                    <p>This delightful creation features rich chocolate ice cream loaded with chocolate chips and chunks, all nestled between two soft, chewy cookies. It’s the ultimate treat for chocolate aficionados!</p>
                   </div>
                   <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/specials-4.png" alt="" class="img-fluid">
-                  </div>
-                </div>
-              </div>
-              <div class="tab-pane" id="specials-tab-5">
-                <div class="row">
-                  <div class="col-lg-8 details order-2 order-lg-1">
-                    <h3>Est eveniet ipsam sindera pad rone matrelat sando reda</h3>
-                    <p class="fst-italic">Omnis blanditiis saepe eos autem qui sunt debitis porro quia.</p>
-                    <p>Exercitationem nostrum omnis. Ut reiciendis repudiandae minus. Omnis recusandae ut non quam ut quod eius qui. Ipsum quia odit vero atque qui quibusdam amet. Occaecati sed est sint aut vitae molestiae voluptate vel</p>
-                  </div>
-                  <div class="col-lg-4 text-center order-1 order-lg-2">
-                    <img src="assets/img/specials-5.png" alt="" class="img-fluid">
+                    <img src="assets/img/menu/triple-choco-cookie.jpg" alt="" class="img-fluid">
                   </div>
                 </div>
               </div>
@@ -583,75 +568,73 @@ mysqli_close($conn);
             <div class="swiper-slide">
               <div class="row gy-4 event-item">
                 <div class="col-lg-6">
-                  <img src="assets/img/events-slider/events-slider-1.jpg" class="img-fluid" alt="">
+                  <img src="assets/img/events-slider/birthday-party.jpg" class="img-fluid" alt="">
                 </div>
                 <div class="col-lg-6 pt-4 pt-lg-0 content">
                   <h3>Birthday Parties</h3>
                   <div class="price">
-                    <p><span>$189</span></p>
+                    <p><span>RM189</span></p>
                   </div>
                   <p class="fst-italic">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                    magna aliqua.
+                    Celebrate your special day with us! Our birthday party package includes everything you need for a memorable celebration
                   </p>
                   <ul>
-                    <li><i class="bi bi-check2-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
-                    <li><i class="bi bi-check2-circle"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
-                    <li><i class="bi bi-check2-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+                    <li><i class="bi bi-check2-circle"></i> <span>Fun activities for all ages</span></li>
+                    <li><i class="bi bi-check2-circle"></i> <span>Themed decorations to fit your party style</span></li>
+                    <li><i class="bi bi-check2-circle"></i> <span>Delicious ice-cream birthday cake included</span></li>
                   </ul>
                   <p>
-                    Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                    velit esse cillum dolore eu fugiat nulla pariatur
+                    Create unforgettable memories with friends and family as you enjoy a day filled with laughter and joy. 
+					Let us handle the details while you focus on having fun!
                   </p>
                 </div>
               </div>
             </div><div class="swiper-slide">
               <div class="row gy-4 event-item">
                 <div class="col-lg-6">
-                  <img src="assets/img/events-slider/events-slider-2.jpg" class="img-fluid" alt="">
+                  <img src="assets/img/events-slider/private-party.jpg" class="img-fluid" alt="">
                 </div>
                 <div class="col-lg-6 pt-4 pt-lg-0 content">
                   <h3>Private Parties</h3>
                   <div class="price">
-                    <p><span>$290</span></p>
+                    <p><span>RM290</span></p>
                   </div>
                   <p class="fst-italic">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                    magna aliqua.
+                    Design your perfect event with our custom party package tailored to your needs! Whether it's a milestone celebration or a unique gathering, we’ve got you covered
                   </p>
                   <ul>
-                    <li><i class="bi bi-check2-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
-                    <li><i class="bi bi-check2-circle"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
-                    <li><i class="bi bi-check2-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+                    <li><i class="bi bi-check2-circle"></i> <span>Personalized decorations to match your theme</span></li>
+                    <li><i class="bi bi-check2-circle"></i> <span>Customized menu options to satisfy every palate</span></li>
+                    <li><i class="bi bi-check2-circle"></i> <span>Flexible scheduling for your convenience</span></li>
                   </ul>
                   <p>
-                    Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                    velit esse cillum dolore eu fugiat nulla pariatur
+                    Bring your vision to life and enjoy a bespoke experience that reflects your style and preferences. 
+					From concept to execution, we are here to make your dream event come true!
                   </p>
                 </div>
               </div>
             </div><div class="swiper-slide">
               <div class="row gy-4 event-item">
                 <div class="col-lg-6">
-                  <img src="assets/img/events-slider/events-slider-3.jpg" class="img-fluid" alt="">
+                  <img src="assets/img/events-slider/custom-party.jpg" class="img-fluid" alt="">
                 </div>
                 <div class="col-lg-6 pt-4 pt-lg-0 content">
                   <h3>Custom Parties</h3>
                   <div class="price">
-                    <p><span>$99</span></p>
+                    <p><span>RM99</span></p>
                   </div>
                   <p class="fst-italic">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                    magna aliqua.
+                    Host an exclusive gathering with our private party package, designed for those seeking a more intimate setting. 
+					Perfect for corporate events, anniversaries, or small celebrations
                   </p>
                   <ul>
-                    <li><i class="bi bi-check2-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
-                    <li><i class="bi bi-check2-circle"></i> <span>Duis aute irure dolor in reprehenderit in voluptate velit.</span></li>
-                    <li><i class="bi bi-check2-circle"></i> <span>Ullamco laboris nisi ut aliquip ex ea commodo consequat.</span></li>
+                    <li><i class="bi bi-check2-circle"></i> <span>Private venue access for a more personalized experience</span></li>
+                    <li><i class="bi bi-check2-circle"></i> <span>Dedicated staff to cater to your every need</span></li>
+                    <li><i class="bi bi-check2-circle"></i> <span>Premium catering options for a luxurious dining experience</span></li>
                   </ul>
                   <p>
-                    Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate
-                    velit esse cillum dolore eu fugiat nulla pariatur
+                    Enjoy a sophisticated atmosphere where you can connect with your guests without distractions. 
+					We ensure every detail is taken care of, allowing you to relax and enjoy the occasion
                   </p>
                 </div>
               </div>
@@ -700,56 +683,56 @@ mysqli_close($conn);
               <div class="testimonial-item" "="">
             <p>
               <i class=" bi bi-quote quote-icon-left"></i>
-                <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.</span>
+                <span>Magnum Cafe ni memang best! Ice cream dia, wow! Rasa macam heaven, especially bila combine dengan chocolate. Perfect for a sweet escape after kerja. Kena datang lagi!</span>
                 <i class="bi bi-quote quote-icon-right"></i>
                 </p>
-                <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
-                <h3>Saul Goodman</h3>
-                <h4>Ceo &amp; Founder</h4>
+                <img src="assets/img/testimonials/testimonials1.jpg" class="testimonial-img" alt="">
+                <h3>Fattah Amin</h3>
+                <h4>Actor &amp; Singer</h4>
               </div>
             </div><div class="swiper-slide">
               <div class="testimonial-item">
                 <p>
                   <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.</span>
+                  <span>Magnum Cafe ni sangat istimewa. Setiap kali saya datang, saya rasa macam menyanyi di atas pentas! Rasa ice cream di sini sangat kaya dan menggoda. Truly a delightful experience!</span>
                   <i class="bi bi-quote quote-icon-right"></i>
                 </p>
-                <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
-                <h3>Sara Wilsson</h3>
-                <h4>Designer</h4>
+                <img src="assets/img/testimonials/testimonials2.jpg" class="testimonial-img" alt="">
+                <h3>Dato' Siti Nurhaliza</h3>
+                <h4>Singer &amp; Icon</h4>
               </div>
             </div><div class="swiper-slide">
               <div class="testimonial-item">
                 <p>
                   <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.</span>
+                  <span>Magnum Cafe ni buat saya rasa like a kid again! Ice cream dia semua sedap, dan ambience sangat chic. Perfect untuk lepak dengan kawan-kawan!</span>
                   <i class="bi bi-quote quote-icon-right"></i>
                 </p>
-                <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
-                <h3>Jena Karlis</h3>
-                <h4>Store Owner</h4>
+                <img src="assets/img/testimonials/testimonials3.jpg" class="testimonial-img" alt="">
+                <h3>Nora Danish</h3>
+                <h4>Actress &amp; Model</h4>
               </div>
             </div><div class="swiper-slide">
               <div class="testimonial-item">
                 <p>
                   <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.</span>
+                  <span>Wah, Magnum Cafe! Setiap suapan ice cream tu macam satu lagu yang indah. Saya suka kombinasi rasa yang kreatif. Memang best untuk lepas penat berlatih. Highly recommended!</span>
                   <i class="bi bi-quote quote-icon-right"></i>
                 </p>
-                <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
-                <h3>Matt Brandon</h3>
-                <h4>Freelancer</h4>
+                <img src="assets/img/testimonials/testimonials4.jpg" class="testimonial-img" alt="">
+                <h3>Ernie Zakri</h3>
+                <h4>Singer</h4>
               </div>
             </div><div class="swiper-slide">
               <div class="testimonial-item">
                 <p>
                   <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.</span>
+                  <span>Magnum Cafe ni power! Ice cream dia memang 'luxury' dan setiap rasa ada cerita. Suasana dia pun sangat 'Instagrammable'. Perfect untuk buat content dan enjoy dengan family!</span>
                   <i class="bi bi-quote quote-icon-right"></i>
                 </p>
-                <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
-                <h3>John Larson</h3>
-                <h4>Entrepreneur</h4>
+                <img src="assets/img/testimonials/testimonials5.jpg" class="testimonial-img" alt="">
+                <h3>Dato' Aliff Syukri</h3>
+                <h4>Entrepreneur &amp; Influencer</h4>
               </div>
             </div></div>
           <div class="swiper-pagination"></div>
@@ -845,33 +828,33 @@ mysqli_close($conn);
             </div>
           </div><div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
             <div class="member">
-              <img src="assets/img/chefs/chefs-2.jpg" class="img-fluid" alt="">
+              <img src="assets/img/chefs/chef-2.jpg" class="img-fluid" alt="">
               <div class="member-info">
                 <div class="member-info-content">
-                  <h4>Sarah Jhonson</h4>
-                  <span>Patissier</span>
+                  <h4>Reynold Poernomo</h4>
+                  <span>Sous</span>
                 </div>
                 <div class="social">
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
+                  <a href="https://x.com/masterchefau/status/844736312452169729"><i class="bi bi-twitter-x"></i></a>
+                  <a href="https://www.facebook.com/reynoldpoer/"><i class="bi bi-facebook"></i></a>
+                  <a href="https://www.instagram.com/reynoldpoer/?hl=en"><i class="bi bi-instagram"></i></a>
+                  <a href="https://au.linkedin.com/in/reynold-poernomo-989293281"><i class="bi bi-linkedin"></i></a>
                 </div>
               </div>
             </div>
           </div><div class="col-lg-4" data-aos="fade-up" data-aos-delay="300">
             <div class="member">
-              <img src="assets/img/chefs/chefs-3.jpg" class="img-fluid" alt="">
+              <img src="assets/img/chefs/chef-3.jpg" class="img-fluid" alt="">
               <div class="member-info">
                 <div class="member-info-content">
-                  <h4>William Anderson</h4>
-                  <span>Cook</span>
+                  <h4>Chef Wan</h4>
+                  <span>Pastry Cook</span>
                 </div>
                 <div class="social">
-                  <a href=""><i class="bi bi-twitter-x"></i></a>
-                  <a href=""><i class="bi bi-facebook"></i></a>
-                  <a href=""><i class="bi bi-instagram"></i></a>
-                  <a href=""><i class="bi bi-linkedin"></i></a>
+                  <a href="https://x.com/chefwann"><i class="bi bi-twitter-x"></i></a>
+                  <a href="https://www.instagram.com/chefwan1958_official/?hl=en"><i class="bi bi-facebook"></i></a>
+                  <a href="https://my.linkedin.com/company/dewanbychefwan1958"><i class="bi bi-instagram"></i></a>
+                  <a href="https://www.facebook.com/cafechefwan/"><i class="bi bi-linkedin"></i></a>
                 </div>
               </div>
             </div>
@@ -971,7 +954,7 @@ mysqli_close($conn);
       <div class="container footer-top">
           <div class="row gy-4 justify-content-center">
               <div class="col-lg-8 footer-about text-center">
-                  <a href="index.html" class="logo d-flex justify-content-center align-items-center mb-3">
+                  <a href="index.php" class="logo d-flex justify-content-center align-items-center mb-3">
                       <span class="sitename" style="font-size:28px; font-weight:bold;">Magnum Cafe</span>
                   </a>
                   <div class="footer-contact pt-3" style="font-size:18px; line-height:1.8;">
