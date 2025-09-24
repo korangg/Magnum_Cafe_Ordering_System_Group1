@@ -222,9 +222,7 @@
             <ul>
                 <li><a href="userhome.php">Home</a></li>
                 <li><a href="userhome.php#menu">Menu</a></li>
-     
                 <li><a href="cart.php" class="active">Cart</a></li>
-            
             </ul>
         </nav>
     </div>
