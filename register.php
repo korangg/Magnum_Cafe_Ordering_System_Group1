@@ -1,4 +1,18 @@
 <?php
+
+$host = "localhost";
+$user = "root";
+$password = "";
+$db = "ecommerce_db";
+
+// Create a connection
+$conn = mysqli_connect($host, $user, $password, $db);
+
+// Check connection
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -6,9 +20,20 @@ require 'phpmailer/PHPMailer.php';
 require 'phpmailer/SMTP.php';
 require 'phpmailer/Exception.php';
 
-// 📨 Gmail credentials
-$gmailUser = "muhammadizzuddinfarhan2005@gmail.com";       // ← Replace with your Gmail
-$gmailAppPassword = "zlcvvfzwhvwlnhuh";        // ← Replace with your 16-char app password
+// Query to retrieve Gmail user and app password
+$sql = "SELECT gmailUser, gmailAppPassword FROM PHPmailer LIMIT 1";
+$result = mysqli_query($conn, $sql);
+
+// Check if the query was successful and if any rows were returned
+if (mysqli_num_rows($result) > 0) {
+    // Fetch the row as an associative array
+    $row = mysqli_fetch_assoc($result);
+    $gmailUser = $row['gmailUser'];
+    $gmailAppPassword = $row['gmailAppPassword'];
+} else {
+    echo "No credentials found.";
+}
+
 
 // 🗄️ Database connection
 $host = "localhost";
