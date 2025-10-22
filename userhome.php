@@ -323,8 +323,8 @@ mysqli_close($conn);
 		<source src="https://nicolaipalmkvist.com/wp-content/uploads/2024/12/1-1.mp4" type="video/mp4">
 	</video>
 	
-	<div class="text-overlay-left">Chocolate<br>makes</div>
-	<div class="text-overlay-right">Everything<br>better.</div>
+	<div style="font-family: 'Roboto', sans-serif; font-weight: bold; font-style: italic;" class="text-overlay-left">Chocolate<br>makes</div>
+    <div style="font-family: 'Roboto', sans-serif; font-weight: bold; font-style: italic;" class="text-overlay-right">Everything<br>better.</div>
 
     </section>
 	<section id="menu" class="menu section section-black">
