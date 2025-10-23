@@ -272,7 +272,7 @@ mysqli_close($conn);
           <li><a href="profile.php"><i class="bi bi-person-circle"></i> Profile</a></li>
           <li><a href="checkout.php"><i class="bi bi-cart-check"></i> Checkout</a></li>
           <li><a href="receipt.php"><i class="bi bi-receipt"></i> Receipt</a></li>
-          <li><a href="order_status.php"><i class="bi bi-truck"></i> View Order Status</a></li>
+          <li><a href="user_orders.php"><i class="bi bi-truck"></i> View Order Status</a></li>
           <li class="sign-out"><a href="logout.php"><i class="bi bi-box-arrow-left"></i> Sign Out</a></li>
       </ul>
   </div>
