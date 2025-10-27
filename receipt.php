@@ -1,18 +1,30 @@
 <?php
 session_start();
+
+// ✅ Ensure only logged-in users of type 'user' can view
 if (!isset($_SESSION["username"]) || $_SESSION["usertype"] !== "user") {
     header("Location: login.php");
     exit();
 }
 
-if (!isset($_GET['invoice'])) {
+/*
+----------------------------------------------------
+|  Handle Invoice ID: from URL or Session fallback  |
+----------------------------------------------------
+*/
+if (isset($_GET['invoice'])) {
+    // If invoice is passed in URL (after PayPal), save it in session
+    $_SESSION['last_invoice'] = $_GET['invoice'];
+    $invoiceId = $_GET['invoice'];
+} elseif (isset($_SESSION['last_invoice'])) {
+    // If user returns later, use stored invoice from session
+    $invoiceId = $_SESSION['last_invoice'];
+} else {
+    // No invoice found anywhere
     echo "❌ Invoice ID missing.";
     exit();
 }
-
-$invoiceId = $_GET['invoice'];
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,6 +32,10 @@ $invoiceId = $_GET['invoice'];
   <title>Receipt - <?= htmlspecialchars($invoiceId) ?></title>
   <link rel="stylesheet" href="style.css">
   <style>
+    body {
+        background: #f0f2f5;
+        font-family: Arial, sans-serif;
+    }
     .receipt {
         max-width: 600px;
         margin: 2em auto;
@@ -44,6 +60,7 @@ $invoiceId = $_GET['invoice'];
         font-weight: bold;
         margin-top: 1em;
         font-size: 1.2em;
+        text-align: right;
     }
     .print-btn {
         display: block;
@@ -54,6 +71,10 @@ $invoiceId = $_GET['invoice'];
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        transition: background 0.3s;
+    }
+    .print-btn:hover {
+        background: #3c3fb0;
     }
   </style>
 </head>
@@ -68,6 +89,7 @@ $invoiceId = $_GET['invoice'];
 </div>
 
 <script>
+// ✅ Load last receipt data from localStorage
 const cartData = JSON.parse(localStorage.getItem("lastReceipt"));
 if (cartData && cartData.length > 0) {
     const ul = document.getElementById("receipt-items");
