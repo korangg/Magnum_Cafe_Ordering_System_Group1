@@ -41,12 +41,16 @@ Make sure you downloaded the latest version of XAMPP. It should include the foll
 # 🔑User Credentials
 
 **Admin** 
+
 Username: admin1
+
 Password: Test123
 
 
 **Staff**
-Username: staff1
+
+Username: staff1 
+
 Password: Test123
 
 
@@ -59,9 +63,9 @@ Password: Test123
 
 
 **User**
-User Username: izudin
-User Password: Test123
+Username: izudin
+Password: Test123
 
 
-User Username: farysh
-User Password: Test123
+Username: farysh
+Password: Test123
