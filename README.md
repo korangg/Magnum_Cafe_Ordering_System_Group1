@@ -1,15 +1,15 @@
 ![UTM SPACE LOGO](assets/img/readme_pic/utm_space_logo.png)
-# Magnum_Cafe_Ordering_System_Group1
+# ☕Magnum_Cafe_Ordering_System_Group1
 
 Magnum Cafe is an online platform built for the Final Year Project of Software Development Course (DDWD3723) representing group G01_38. It's dedicated to selling a diverse range of ice cream flavors, allowing customers to browse and order their favorite treats conveniently. Integrated with admin and staff dashboard that allows for monitoring of user feedback, item stocks, orders, user/staff credentials and sales report.
 
-# Installation
+# 🛠️Installation
 
 To run this program, you will need to install this thing:
 
 + XAMPP
 
-# Install XAMPP
+# ⚙️Install XAMPP
 
 Download the Windows Installer from [XAMPP Official Website](https://www.apachefriends.org/download.html)
 
