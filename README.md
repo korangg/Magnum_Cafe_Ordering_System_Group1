@@ -47,6 +47,7 @@ Username: admin1
 Password: Test123
 
 
+
 **Staff**
 
 Username: staff1 
@@ -55,17 +56,23 @@ Password: Test123
 
 
 Username: staff2
+
 Password: Test123
 
 
 Username: staff3
+
 Password: Test123
 
 
+
 **User**
+
 Username: izudin
+
 Password: Test123
 
 
 Username: farysh
+
 Password: Test123
