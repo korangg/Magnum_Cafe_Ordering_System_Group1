@@ -46,7 +46,6 @@ Make sure you downloaded the latest version of XAMPP. It should include the foll
   Password: Test123
 
 &nbsp;
-
 **Staff**
 
 - Username: staff1  
@@ -59,7 +58,6 @@ Make sure you downloaded the latest version of XAMPP. It should include the foll
   Password: Test123
 
 &nbsp;
-
 **User**
 
 - Username: izudin  
