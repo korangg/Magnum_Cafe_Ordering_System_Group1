@@ -1,4 +1,4 @@
-![UTM SPACE LOGO](https://backendstudypal.studypal.my/storage/courseLogo/1729653367.jpeg)
+![UTM SPACE LOGO](assets/img/readme_pic/utm space logo.png)
 # Magnum_Cafe_Ordering_System_Group1
 
 Magnum Cafe is an online platform built for the Final Year Project of Software Development Course (DDWD3723) representing group G01_38. It's dedicated to selling a diverse range of ice cream flavors, allowing customers to browse and order their favorite treats conveniently. Integrated with admin and staff dashboard that allows for monitoring of user feedback, item stocks, orders, user/staff credentials and sales report.
@@ -26,4 +26,4 @@ Make sure you downloaded the latest version of XAMPP. It should include the foll
 + FileZilla FTP Server 0.9.41
 + Tomcat 8.5.96 (with mod_proxy_ajp as connector)
 + Strawberry Perl 5.32.1.1 Portable
-![XAMPP PAGE]()
+![XAMPP PAGE](assets/img/readme_pic/xampp page.png)
