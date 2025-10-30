@@ -13,6 +13,8 @@ To run this program, you will need to install this thing:
 
 Download the Windows Installer from [XAMPP Official Website](https://www.apachefriends.org/download.html)
 
+![XAMPP PAGE](assets/img/readme_pic/xampp_page.png)
+
 Make sure you downloaded the latest version of XAMPP. It should include the following things:
 
 + Apache 2.4.58
@@ -26,4 +28,4 @@ Make sure you downloaded the latest version of XAMPP. It should include the foll
 + FileZilla FTP Server 0.9.41
 + Tomcat 8.5.96 (with mod_proxy_ajp as connector)
 + Strawberry Perl 5.32.1.1 Portable
-![XAMPP PAGE](assets/img/readme_pic/xampp_page.png)
+
