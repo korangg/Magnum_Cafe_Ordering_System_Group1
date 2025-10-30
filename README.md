@@ -32,7 +32,7 @@ Make sure you downloaded the latest version of XAMPP. It should include the foll
 Use this [video](https://www.youtube.com/watch?v=yHkxKyNL2gE) as a guideline on how to install and setup XAMPP wizard. It also shows how to open phpMyAdmin which will be used to store database for the project.
 
 # ⛓️Getting Started
-1. Open XAMPP and activate both Apache and MySQL Module simply by pressing the "Start" button ![XAMPP Activate Page](assets/img/readme_pic/XAMPP_activate)
+1. Open XAMPP and activate both Apache and MySQL Module simply by pressing the "Start" button ![XAMPP Activate Page](assets/img/readme_pic/xampp_activate.png)
 2. Create a new folder named "MASTER PROJECT - MAGNUM CAFE SYSTEM" in "C:\xampp\htdocs"
 3. Clone the Magnum_Cafe_Ordering_System_Group1 inside that folder
 4. Download database data from [🔗Useful Links](#usefull-links)
