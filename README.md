@@ -24,5 +24,6 @@ Make sure you downloaded the latest version of XAMPP. It should include the foll
 + Webalizer 2.23-04
 + Mercury Mail Transport System 4.63
 + FileZilla FTP Server 0.9.41
-* Tomcat 8.5.96 (with mod_proxy_ajp as connector)
-* Strawberry Perl 5.32.1.1 Portable
++ Tomcat 8.5.96 (with mod_proxy_ajp as connector)
++ Strawberry Perl 5.32.1.1 Portable
+![XAMPP PAGE]()
