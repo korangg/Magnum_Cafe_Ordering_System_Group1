@@ -31,7 +31,16 @@ Make sure you downloaded the latest version of XAMPP. It should include the foll
 
 Use this [video](https://www.youtube.com/watch?v=yHkxKyNL2gE) as a guideline on how to install and setup XAMPP wizard. It also shows how to open phpMyAdmin which will be used to store database for the project.
 
-# ⛓️Executing Program
+# ⛓️Getting Started
+1. Open XAMPP and activate both Apache and MySQL Module simply by pressing the "Start" button ![XAMPP Activate Page](assets/img/readme_pic/XAMPP_activate)
+2. Create a new folder named "MASTER PROJECT - MAGNUM CAFE SYSTEM" in "C:\xampp\htdocs"
+3. Clone the Magnum_Cafe_Ordering_System_Group1 inside that folder
+4. Download database data from [🔗Useful Links](#-usefull-links)
+5. Open phpMyAdmin and create a new database named "ecommerce_db"
+6. Import the "ecommerce_db.sql" file into the "ecommerce_db" database
+7. To run the website, open a new tab and enter the following: "http://localhost/MASTER%20PROJECT%20-%20MAGNUM%20CAFE%20SYSTEM/Magnum_Cafe_Ordering_System_Group1/index.php"
+8. As you first enter "index.php", you'll be signed in as a guest. Use the credentials provided in [🔑User Credentials](#-user-credentials) to login as admin/staff/user
+9. Enjoy
 
 
 # 🔗Usefull Links
@@ -39,6 +48,8 @@ Use this [video](https://www.youtube.com/watch?v=yHkxKyNL2gE) as a guideline on 
 [Link](https://github.com/korangg/Magnum_Cafe_Ordering_System_Group1) of Github for source code
 
 [Link](https://magnumcafe.shop/) of the project
+
+[Link](https://www.mediafire.com/file/h2acvrxv8d38gah/ecommerce_db.sql/file) to download localhost database from MediaFire
 
 # 🔑User Credentials
 
@@ -67,3 +78,9 @@ Use this [video](https://www.youtube.com/watch?v=yHkxKyNL2gE) as a guideline on 
 
 - Username: farysh  
   Password: Test123
+
+# 💡Authors
+
++ @korangg
++ @Peashy77
++ @syahmihariz11
