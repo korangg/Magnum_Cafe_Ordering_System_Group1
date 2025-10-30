@@ -29,6 +29,8 @@ Make sure you downloaded the latest version of XAMPP. It should include the foll
 + Tomcat 8.5.96 (with mod_proxy_ajp as connector)
 + Strawberry Perl 5.32.1.1 Portable
 
+Use this [video](https://www.youtube.com/watch?v=yHkxKyNL2gE) as a guideline on how to install and setup XAMPP wizard. It also shows how to open phpMyAdmin which will be used to store database for the project.
+
 # ⛓️Executing Program
 
 
