@@ -35,10 +35,10 @@ Use this [video](https://www.youtube.com/watch?v=yHkxKyNL2gE) as a guideline on 
 1. Open XAMPP and activate both Apache and MySQL Module simply by pressing the "Start" button ![XAMPP Activate Page](SYSTEM%20FOLDER/Codes/assets/img/readme_pic/xampp_activate.png)
 2. Create a new folder named "MASTER PROJECT - MAGNUM CAFE SYSTEM" in "C:\xampp\htdocs"
 3. Clone the Magnum_Cafe_Ordering_System_Group1 inside that folder
-4. Download database data from [🔗Usefull Links](#userfull-links)
+4. Download database data from [🔗Usefull Links](#usefull-links)
 5. Open phpMyAdmin and create a new database named "ecommerce_db"
 6. Import the "ecommerce_db.sql" file into the "ecommerce_db" database
-7. To run the website, open a new tab and enter the following: "localhost/MASTER PROJECT - MAGNUM CAFE SYSTEM/Magnum_Cafe_Ordering_System_Group1/index.php"
+7. To run the website, open a new tab and enter the following: "localhost/MASTER PROJECT - MAGNUM CAFE SYSTEM/Magnum_Cafe_Ordering_System_Group1/SYSTEM FOLDER/Codes/index.php"
 8. As you first enter "index.php", you'll be signed in as a guest. Use the credentials provided in [🔑User Credentials](#user-credentials) to login as admin/staff/user
 9. Enjoy
 
