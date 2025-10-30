@@ -35,6 +35,7 @@ Make sure you downloaded the latest version of XAMPP. It should include the foll
 # 🔗Usefull Links
 
 [Link](https://github.com/korangg/Magnum_Cafe_Ordering_System_Group1) of Github for source code
+
 [Link](https://magnumcafe.shop/) of the project
 
 # 🔑User Credentials
@@ -48,15 +49,19 @@ Password: Test123
 Username: staff1
 Password: Test123
 
+
 Username: staff2
 Password: Test123
+
 
 Username: staff3
 Password: Test123
 
+
 **User**
 User Username: izudin
 User Password: Test123
+
 
 User Username: farysh
 User Password: Test123
