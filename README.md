@@ -81,6 +81,6 @@ Use this [video](https://www.youtube.com/watch?v=yHkxKyNL2gE) as a guideline on 
 
 # 💡Authors
 
-+ @korangg
-+ @Peashy77
-+ @syahmihariz11
++ @[korangg](https://github.com/korangg) - Project Lead
++ @[Peashy77](https://github.com/Peashy77) - Frontend Developer
++ @[syahmihariz11](https://github.com/syahmihariz11) - Backend Developer
